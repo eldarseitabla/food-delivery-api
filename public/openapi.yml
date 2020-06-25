@@ -1,0 +1,33 @@
+openapi: 3.0.3
+
+info:
+  version: "1"
+  title: "Food delivery API"
+  description: "Demo Food delivery API"
+
+paths:
+  /restaurant/test:
+    get:
+      summary: Test
+      tags:
+        - Test
+      responses:
+        200:
+          $ref: "#/components/responses/Response"
+
+components:
+  responses:
+    Response:
+      description: Common response
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+                enum:
+                  - Success
+                  - Request body has wrong format

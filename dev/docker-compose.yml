@@ -1,0 +1,12 @@
+mysql:
+  image: mysql:5.7
+  container_name: mysql
+  restart: always
+  environment:
+    - MYSQL_ROOT_PASSWORD=12345
+  command: --init-file /data/application/init.sql
+  volumes:
+    - $DOCKER_VOLUMES/mysql/var/lib/mysql:/var/lib/mysql
+    - ./mysql_init.sql:/data/application/init.sql
+  ports:
+    - 3306:3306

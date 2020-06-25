@@ -1,0 +1,7 @@
+{
+  "recursive": true,
+  "require": "source-map-support/register",
+  "timeout": 10000,
+  "exit": true,
+  "allow-console-logs": true
+}

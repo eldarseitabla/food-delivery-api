@@ -1,0 +1,28 @@
+# OS generated files
+DS_Store
+.DS_Store
+.DS_Store?
+._*
+.*.sw[op]
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editors and IDEs
+.idea/
+.vscode/
+
+# Environment
+.env
+
+# Dependencies
+node_modules/
+
+package-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+

@@ -1,0 +1,62 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "rules": {
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "strict": ["error", "global"],
+    "indent": ["error", 2, {"MemberExpression": 1, "SwitchCase": 1}],
+    "max-len": "off",
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true
+      }
+    ],
+    "comma-style": "error",
+    "consistent-this": [
+      "error",
+      "_this"
+    ],
+    "keyword-spacing": "error",
+    "no-buffer-constructor": "warn",
+    "no-console": "off",
+    "no-multi-spaces": "error",
+    "func-call-spacing": "error",
+    "no-trailing-spaces": "error",
+    "space-before-blocks": "error",
+    "space-before-function-paren": [
+      "error",
+      "always"
+    ],
+    "space-infix-ops": "error",
+    "space-unary-ops": "error",
+    "no-var": "warn",
+    "prefer-const": "warn",
+    "no-restricted-globals": [
+      "error",
+      {
+        "name": "context",
+        "message": "Don't use Mocha's global context"
+      }
+    ],
+    "rest-spread-spacing": [
+      "error",
+      "never"
+    ],
+    "object-curly-spacing": ["error", "always"],
+    "eol-last": ["error", "always"],
+    "comma-dangle": ["error", "always-multiline"]
+  }
+}
