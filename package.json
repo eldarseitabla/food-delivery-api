@@ -5,7 +5,11 @@
   "scripts": {
     "start": "node server.js",
     "test:acceptance": "mocha dist/tests/acceptance",
-    "test": "NODE_ENV=test npm run test:acceptance"
+    "test": "NODE_ENV=test npm run test:acceptance",
+    "migrate:create": "db-migrate create",
+    "migrate:up": "db-migrate up",
+    "migrate:down": "db-migrate down",
+    "migrate:create:sql": "db-migrate create --sql-file init"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -15,10 +19,13 @@
     "express": "^4.17.1",
     "http-errors": "^1.7.3",
     "log4js": "^6.1.2",
+    "mysql": "^2.18.1",
     "response-time": "^2.3.2",
     "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
+    "db-migrate": "^0.11.11",
+    "db-migrate-mysql": "^2.1.1",
     "eslint": "^6.4.0",
     "mocha": "^7.1.0",
     "sinon": "^9.0.2",

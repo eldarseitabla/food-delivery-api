@@ -7,10 +7,10 @@ class RestaurantController {
 }
 const restaurantController = new RestaurantController();
 
-const restaurantRouter = Router();
+const restaurant = Router();
 
-restaurantRouter.get('/test', async (req, res, next) => {
+restaurant.get('/test', async (req, res, next) => {
   await restaurantController.test(req, res, next);
 });
 
-module.exports = { restaurantRouter };
+module.exports = { restaurant };
