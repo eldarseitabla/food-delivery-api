@@ -1,0 +1,12 @@
+{
+  "defaultEnv": "local",
+  "local": {
+    "driver": "mysql",
+    "host": {"ENV": "MYSQL_HOST"},
+    "port": {"ENV": "MYSQL_PORT"},
+    "database": {"ENV": "MYSQL_DB"},
+    "user": {"ENV": "MYSQL_USER"},
+    "password": {"ENV": "MYSQL_PASSWORD"},
+    "multipleStatements": true
+  }
+}
