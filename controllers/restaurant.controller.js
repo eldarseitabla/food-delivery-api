@@ -1,16 +1,115 @@
 const { Router } = require('express');
+const httpErrors = require('http-errors');
+const { restaurantService } = require('../services');
+const { restaurantValidator } = require('../validators');
 
+/**
+ * @memberOf module:controller
+ * @class
+ * @instance
+ */
 class RestaurantController {
-  async test (req, res) {
-    res.send({ 'message': 'Success' });
+  /**
+   * @param {module:service#RestaurantService} restaurantService
+   * @param {module:validator#RestaurantValidator} restaurantValidator
+   */
+  constructor (restaurantService, restaurantValidator) {
+    /** @type {module:service#RestaurantService}
+     * @private */
+    this._service = restaurantService;
+    /** @type {module:validator#RestaurantValidator}
+     * @private */
+    this._validator = restaurantValidator;
+  }
+
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {Promise<*>}
+   */
+  async create (req, res, next) {
+    const errors = await this._validator.check(req);
+    if (!errors.isEmpty()) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    }
+    const { name, picture } = req.body;
+    const result = await this._service.create({ name, picture });
+    res.json(result);
+  }
+
+  async updateOne (req, res, next) {
+    const errors = await this._validator.check(req);
+    if (!errors.isEmpty()) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    }
+
+    const { id } = req.params;
+    const { name, picture } = req.body;
+    const result = await this._service.updateOne(id, { name, picture });
+    res.json(result);
+  }
+
+  async findOne (req, res, next) {
+    const { id } = req.params;
+    const result = await this._service.findOne(id);
+    if (!result[0]) {
+      return next(new httpErrors(404, 'Restaurant not found'));
+    }
+    res.json(result[0]);
+  }
+
+  async findAll (req, res, next) {
+    const errorsPagination = await this._validator.checkPagination(req);
+    if (!errorsPagination.isEmpty()) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsPagination.array())));
+    }
+    const { limit, offset } = req.query;
+    const result = await this._service.findAll(limit, offset);
+    res.json(result);
+  }
+
+  async deleteOne (req, res) {
+    const { id } = req.params;
+    await this._service.deleteOne(id);
+    res.status(204).send();
+  }
+
+  async deleteAll (req, res) {
+    await this._service.deleteAll();
+    res.status(204).send();
   }
 }
-const restaurantController = new RestaurantController();
+const restaurantController = new RestaurantController(restaurantService, restaurantValidator);
 
 const restaurant = Router();
 
-restaurant.get('/test', async (req, res, next) => {
-  await restaurantController.test(req, res, next);
+// Create restaurant
+restaurant.post('', async (req, res, next) => {
+  await restaurantController.create(req, res, next);
+});
+
+// Update restaurant
+restaurant.patch('/:id(\\d+)', async (req, res, next) => {
+  await restaurantController.updateOne(req, res, next);
+});
+
+// Get restaurant by id
+restaurant.get('/:id(\\d+)', async (req, res, next) => {
+  await restaurantController.findOne(req, res, next);
+});
+
+// Get many restaurants
+restaurant.get('', async (req, res, next) => {
+  await restaurantController.findAll(req, res, next);
+});
+
+restaurant.delete('/:id', async (req, res) => {
+  await restaurantController.deleteOne(req, res);
+});
+
+restaurant.delete('', async (req, res) => {
+  await restaurantController.deleteAll(req, res);
 });
 
 module.exports = { restaurant };

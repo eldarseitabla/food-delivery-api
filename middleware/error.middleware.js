@@ -5,6 +5,12 @@ const logger = getLogger('[middleware.errorMiddleware]');
 /**
  * Error handler middleware.
  * Uses status code from error if present.
+ * @memberOf module:middleware
+ * @param {Error} error
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @return {Promise<void>}
  */
 const errorMiddleware = async (error, req, res, next) => {
   if (error) {

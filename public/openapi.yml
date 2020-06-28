@@ -6,28 +6,167 @@ info:
   description: "Demo Food delivery API"
 
 paths:
-  /restaurant/test:
-    get:
-      summary: Test
+  /restaurant:
+    post:
+      summary: Create
+      operationId: createRestaurant
       tags:
-        - Test
+        - Restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestaurantRequestBody"
       responses:
         200:
-          $ref: "#/components/responses/Response"
-
-components:
-  responses:
-    Response:
-      description: Common response
-      content:
-        application/json:
+          description: Restaurant Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantSchema"
+    get:
+      summary: Get Restaurants
+      operationId: getRestaurants
+      tags:
+        - Restaurant
+      parameters:
+        - in: query
+          name: offset
           schema:
-            type: object
-            required:
-              - message
-            properties:
-              message:
-                type: string
-                enum:
-                  - Success
-                  - Request body has wrong format
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Restaurants Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantsResponse"
+    delete:
+      summary: Delete all Restaurants
+      tags:
+        - Restaurant
+      operationId: deleteAllRestaurants
+      responses:
+        204:
+          description: Success
+  /restaurant/{id}:
+    patch:
+      summary: Update
+      operationId: updateRestaurantById
+      tags:
+        - Restaurant
+      parameters:
+        - name: id
+          in: path
+          description: Restaurant ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestaurantRequestBody"
+      responses:
+        200:
+          description: Restaurant Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantSchema"
+    get:
+      summary: Get Restaurant by ID
+      operationId: getRestaurantById
+      tags:
+        - Restaurant
+      parameters:
+        - name: id
+          in: path
+          description: Restaurant ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Restaurant Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantSchema"
+    delete:
+      summary: Delete Restaurant by ID
+      tags:
+        - Restaurant
+      operationId: deleteOneRestaurant
+      parameters:
+        - name: id
+          in: path
+          description: Restaurant ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+components:
+  schemas:
+    RestaurantSchema:
+      description: Restaurant schema
+      type: object
+      required:
+        - id
+        - name
+        - picture
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        picture:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Restaurant
+        picture: some_pic_restaurant
+        createdAt: '2020-02-10 17:32:28'
+        updatedAt: '2020-02-10 17:32:28'
+    RestaurantRequestBody:
+      description: Create Restaurant
+      type: object
+      required:
+        - name
+        - picture
+      properties:
+        name:
+          type: string
+        picture:
+          type: string
+      example:
+        name: Some Restaurant
+        picture: some_pic_restaurant
+    RestaurantsResponse:
+      description: List of Books
+      type: array
+      items:
+        $ref: '#/components/schemas/RestaurantSchema'

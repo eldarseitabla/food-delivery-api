@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 
 const { config } = require('./config');
+const { mysqlDb } = require('./db');
 
 const {
   errorMiddleware,
@@ -16,13 +17,18 @@ const {
   restaurant,
 } = require('./controllers');
 
-const init = () => {
-  // DB connect
+const init = async () => {
+  await mysqlDb.connect();
+};
+
+const shutdown = async () => {
+  await mysqlDb.end();
 };
 
 const app = express();
 app.set('port', config.port || 3000);
 app.set('init', init);
+app.set('shutdown', shutdown);
 app.use(cors());
 app.use(performTimingMiddleware());
 app.use(bodyParser.urlencoded({ extended: true }));
