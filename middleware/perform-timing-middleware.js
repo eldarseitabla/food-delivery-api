@@ -13,7 +13,9 @@ const performTimingMiddleware = () => {
     // const stat = (req.method + req.url)
     //   .replace(/[:.]/g, '')
     //   .replace(/\//g, '_');
-    logger.info(`${req.method} ${req.originalUrl} - ${time}ms`);
+    if (process.env.NODE_ENV !== 'test') {
+      logger.info(`${req.method} ${req.originalUrl} - ${time}ms`);
+    }
   });
 };
 

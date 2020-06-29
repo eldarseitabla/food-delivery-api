@@ -1,6 +1,8 @@
 const { promisify } = require('util');
 const { mysqlDb } = require('../db');
 
+// TODO DAL
+
 /**
  * @memberOf module:model
  * @class
@@ -15,10 +17,7 @@ class RestaurantModel {
      * @private */
     this._table = 'restaurant';
 
-    /** @type {Connection}
-     * @private */
-    this._mysqlDb = mysqlDb;
-    this._asyncDbQuery = promisify(this._mysqlDb.query.bind(this._mysqlDb));
+    this._asyncDbQuery = promisify(mysqlDb.query.bind(mysqlDb));
   }
 
   async create ({ name, picture }) {
@@ -28,8 +27,8 @@ class RestaurantModel {
   }
 
   async updateOne (id, { name, picture }) {
-    const result = await this._asyncDbQuery(`UPDATE ${this._table} SET name = ?, picture = ? WHERE id = ?`, [name, picture, id]);
-    const rows = await this.findOne(result.insertId);
+    await this._asyncDbQuery(`UPDATE ${this._table} SET name = ?, picture = ? WHERE id = ?`, [name, picture, id]);
+    const rows = await this.findOne(id);
     return rows[0];
   }
 

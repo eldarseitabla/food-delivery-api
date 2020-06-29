@@ -1,19 +1,36 @@
 # food-delivery-api
 
-## Create DB
+## Checklist
+- [x] Launch server
+- [x] Swagger
+- [x] DB structure
+- [x] Migrate & Fixtures
+- [x] Mysql connect
+- [ ] Mysql Connection Pooling
+- [ ] CRUD & Swagger & Tests
+    - [x] Restaurant
+    - [ ] Courier
+    - [ ] Product
+    - [ ] Customer
+    - [ ] Order
+    - [ ] OrderItem
+    - [ ] CourierOrder
+
+## Install and Use
+
+### Create DB via
 ```bash
-cd ./dev
-docker-compose -f docker-compose.yml up -d
+cd ./dev && docker-compose -f docker-compose.yml up -d
 ```
 
-## Install & Start
+### Install & Start
 ```bash
-cd food-delivery-api
+cd ../food-delivery-api
 npm i
 npm start
 ```
 
-## Migrate
+### Migrate
 Create migration
 ```bash
 npm run migrate:create some_migration

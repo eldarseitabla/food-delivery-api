@@ -1,6 +1,7 @@
 {
   "recursive": true,
-  "timeout": 10000,
+  "timeout": 20000,
   "exit": true,
-  "allow-console-logs": true
+  "allow-console-logs": true,
+  "file": ["tests/helpers/setup-helper.js"]
 }
