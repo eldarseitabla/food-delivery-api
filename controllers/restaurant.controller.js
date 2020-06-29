@@ -10,14 +10,14 @@ const { restaurantValidator } = require('../validators');
  */
 class RestaurantController {
   /**
-   * @param {module:service#RestaurantService} restaurantService
-   * @param {module:validator#RestaurantValidator} restaurantValidator
+   * @param {module:service.RestaurantService} restaurantService
+   * @param {module:validator.RestaurantValidator} restaurantValidator
    */
   constructor (restaurantService, restaurantValidator) {
-    /** @type {module:service#RestaurantService}
+    /** @type {module:service.RestaurantService}
      * @private */
     this._service = restaurantService;
-    /** @type {module:validator#RestaurantValidator}
+    /** @type {module:validator.RestaurantValidator}
      * @private */
     this._validator = restaurantValidator;
   }
@@ -53,10 +53,10 @@ class RestaurantController {
   async findOne (req, res, next) {
     const { id } = req.params;
     const result = await this._service.findOne(id);
-    if (!result[0]) {
+    if (!result) {
       return next(new httpErrors(404, 'Restaurant not found'));
     }
-    res.json(result[0]);
+    res.json(result);
   }
 
   async findAll (req, res, next) {

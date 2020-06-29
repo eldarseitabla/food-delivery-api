@@ -9,7 +9,7 @@
 - [ ] Mysql Connection Pooling
 - [ ] CRUD & Swagger & Tests
     - [x] Restaurant
-    - [ ] Courier
+    - [x] Courier
     - [ ] Product
     - [ ] Customer
     - [ ] Order
@@ -18,7 +18,15 @@
 
 ## Install and Use
 
-### Create DB via
+### API Docs
+API Docs
+[http://127.0.0.1:5000/api-docs](http://127.0.0.1:5000/api-docs)
+
+OpenAPI spec
+[http://127.0.0.1:5000/openapi.yml](http://127.0.0.1:5000/openapi.yml)
+
+
+### Create DB via Docker
 ```bash
 cd ./dev && docker-compose -f docker-compose.yml up -d
 ```

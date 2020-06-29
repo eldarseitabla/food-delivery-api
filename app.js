@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 
 const { config } = require('./config');
-const { mysqlDb } = require('./db');
+const { mysqlClient } = require('./db');
 
 const {
   errorMiddleware,
@@ -15,14 +15,15 @@ const {
 
 const {
   restaurant,
+  courier,
 } = require('./controllers');
 
 const init = async () => {
-  await mysqlDb.connect();
+  await mysqlClient.raw('SELECT * FROM migrations LIMIT 1');
 };
 
 const shutdown = async () => {
-  await mysqlDb.end();
+  await mysqlClient.destroy();
 };
 
 const app = express();
@@ -35,8 +36,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 app.get('/', (req, res) => { res.sendFile('./public/index.html'); });
+app.get('/favicon.ico', (req, res) => { res.sendFile('./public/favicon.png');});
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, config.swaggerUi.options));
 app.use('/restaurant', restaurant);
+app.use('/courier', courier);
 app.use('*', notFoundMiddleware);
 app.use(errorMiddleware);
 

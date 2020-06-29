@@ -1,3 +1,9 @@
-before(async () => {});
+const { app } = require('../../app');
 
-after(async () => {});
+before(async () => {
+  await app.get('init')();
+});
+
+after(async () => {
+  await app.get('shutdown')();
+});

@@ -7,8 +7,9 @@ const { mysqlClient } = require('../db');
  * @memberOf module:model
  * @class
  * @instance
+ * @extends BaseModel
  */
-class RestaurantModel extends BaseModel {
+class CourierModel extends BaseModel {
 
   /** @param {knex.Client} mysqlClient */
   constructor (mysqlClient) {
@@ -17,15 +18,15 @@ class RestaurantModel extends BaseModel {
     /**
      * @type {string}
      */
-    this.table = 'restaurant';
+    this.table = 'courier';
   }
 }
 
 /**
- * @type {module:model.RestaurantModel}
+ * @type {module:model.CourierModel}
  */
-RestaurantModel.prototype.RestaurantModel = RestaurantModel;
+CourierModel.prototype.CourierModel = CourierModel;
 
-const restaurantModel = new RestaurantModel(mysqlClient);
+const courierModel = new CourierModel(mysqlClient);
 
-module.exports = { restaurantModel };
+module.exports = { courierModel };

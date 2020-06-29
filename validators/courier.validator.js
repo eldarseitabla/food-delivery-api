@@ -5,9 +5,8 @@ const { commonValidator } = require('./common.validator');
  * @memberOf module:validator
  * @class
  * @instance
- * @extends CommonValidator
  */
-class RestaurantValidator extends commonValidator.CommonValidator {
+class CourierValidator extends commonValidator.CommonValidator {
   /**
    * @param {Request} req
    * @return {Promise<Result<ValidationError>>}
@@ -16,18 +15,15 @@ class RestaurantValidator extends commonValidator.CommonValidator {
     const minChars = 6;
     await check('name', `Name must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
     await check('name', 'Name is empty').not().isEmpty().run(req);
-
-    await check('picture', `picture must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
-    await check('picture', 'picture is empty').not().isEmpty().run(req);
     return validationResult(req);
   }
 }
 
 /**
- * @type {module:validator.RestaurantValidator}
+ * @type {module:validator.CourierValidator}
  */
-RestaurantValidator.prototype.RestaurantValidator = RestaurantValidator;
+CourierValidator.prototype.CourierValidator = CourierValidator;
 
-const restaurantValidator = new RestaurantValidator();
+const courierValidator = new CourierValidator();
 
-module.exports = { restaurantValidator };
+module.exports = { courierValidator };

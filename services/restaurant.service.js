@@ -1,3 +1,4 @@
+const { BaseService } = require('./base.service');
 const { restaurantModel } = require('../models');
 
 /**
@@ -5,40 +6,13 @@ const { restaurantModel } = require('../models');
  * @class
  * @instance
  */
-class RestaurantService {
-
-  /** @param {module:model#RestaurantModel} restaurantModel */
-  constructor (restaurantModel) {
-
-    /** @type {module:model#RestaurantModel}
-     * @private */
-    this._model = restaurantModel;
-  }
-
-  async create ({ name, picture }) {
-    return this._model.create({ name, picture });
-  }
-
-  async updateOne (id, { name, picture }) {
-    return this._model.updateOne(id, { name, picture });
-  }
-
-  async findOne (id) {
-    return this._model.findOne(id);
-  }
-
-  async findAll (limit, offset) {
-    return this._model.findAll(limit, offset);
-  }
-
-  async deleteOne (id) {
-    return this._model.deleteOne(id);
-  }
-
-  async deleteAll () {
-    return this._model.deleteAll();
-  }
+class RestaurantService extends BaseService {
 }
+
+/**
+ * @type {module:service.RestaurantService}
+ */
+RestaurantService.prototype.RestaurantService = RestaurantService;
 
 const restaurantService = new RestaurantService(restaurantModel);
 
