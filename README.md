@@ -14,7 +14,7 @@
     - [x] Customer
     - [x] Order
     - [x] OrderItem
-    - [ ] CourierOrder
+    - [x] CourierOrder
 
 ## Install and Use
 

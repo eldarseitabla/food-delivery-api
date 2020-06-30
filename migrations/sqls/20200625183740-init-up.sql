@@ -92,10 +92,15 @@ INSERT INTO order_item (order_id, product_id, price)
 
 CREATE TABLE IF NOT EXISTS courier_order (
   id            BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+  courier_id    BIGINT(20)         NOT NULL,
   order_id      BIGINT(20)         NOT NULL,
   created_at    TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at    TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(),
+  INDEX courier_id_idx (courier_id),
+  FOREIGN KEY (courier_id)
+    REFERENCES courier(id) ON DELETE CASCADE,
   INDEX order_id_idx (order_id),
-  FOREIGN KEY (order_id) REFERENCES `order`(id) ON DELETE CASCADE
+  FOREIGN KEY (order_id)
+    REFERENCES `order`(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO courier_order (order_id) VALUES (1);
+INSERT INTO courier_order (courier_id, order_id) VALUES (1, 1);

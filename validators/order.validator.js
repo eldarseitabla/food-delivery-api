@@ -24,8 +24,9 @@ class OrderValidator extends CommonValidator {
     }
 
     const minChars = 6;
+    const min = 1;
     await check('customer_id', 'customer_id is empty').not().isEmpty().run(req);
-    await check('customer_id', 'customer_id must be number min 0').isInt({ min: 1 }).run(req);
+    await check('customer_id', `customer_id must be number min ${min}`).isInt({ min }).run(req);
 
     await check('payment_status', 'payment_status is empty').not().isEmpty().run(req);
     await check('status', 'status is empty').not().isEmpty().run(req);

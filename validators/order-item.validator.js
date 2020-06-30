@@ -1,7 +1,5 @@
-const httpErrors = require('http-errors');
 const { check, validationResult } = require('express-validator');
 const { CommonValidator } = require('./common.validator');
-const { config } = require('../config');
 
 /**
  * @memberOf module:validator
@@ -14,11 +12,12 @@ class OrderItemValidator extends CommonValidator {
    * @return {Promise<Result<ValidationError>>}
    */
   async check (req) {
+    const min = 1;
     await check('order_id', 'order_id is empty').not().isEmpty().run(req);
-    await check('order_id', 'order_id must be number min 0').isInt({ min: 1 }).run(req);
+    await check('order_id', `order_id must be number min ${min}`).isInt({ min }).run(req);
 
     await check('product_id', 'product_id is empty').not().isEmpty().run(req);
-    await check('product_id', 'product_id must be number min 0').isInt({ min: 1 }).run(req);
+    await check('product_id', `product_id must be number min ${min}`).isInt({ min }).run(req);
 
     await check('price', 'Price is empty').not().isEmpty().run(req);
     await check('price', 'Price must be floating point').isDecimal().run(req);

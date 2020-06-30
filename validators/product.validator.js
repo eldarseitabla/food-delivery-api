@@ -13,6 +13,7 @@ class ProductValidator extends CommonValidator {
    */
   async check (req) {
     const minChars = 6;
+    const min = 1;
     await check('name', 'Name is empty').not().isEmpty().run(req);
     await check('name', `Name must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
 
@@ -26,7 +27,7 @@ class ProductValidator extends CommonValidator {
     await check('picture', `Picture must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
 
     await check('restaurant_id', 'restaurant_id is empty').not().isEmpty().run(req);
-    await check('restaurant_id', 'restaurant_id must be number min 0').isInt({ min: 1 }).run(req);
+    await check('restaurant_id', `restaurant_id must be number min ${min}`).isInt({ min }).run(req);
     return validationResult(req);
   }
 }

@@ -8,4 +8,5 @@ module.exports = {
   ...require('./customer.controller'),
   ...require('./order.controller'),
   ...require('./order-item.controller'),
+  ...require('./courier-order.controller'),
 };

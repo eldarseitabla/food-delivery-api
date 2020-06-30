@@ -21,6 +21,7 @@ const {
   customer,
   order,
   orderItem,
+  courierOrder,
 } = require('./controllers');
 
 const init = async () => {
@@ -49,6 +50,7 @@ app.use('/product', product);
 app.use('/customer', customer);
 app.use('/order', order);
 app.use('/order-item', orderItem);
+app.use('/courier-order', courierOrder);
 app.use('*', notFoundMiddleware);
 app.use(errorMiddleware);
 

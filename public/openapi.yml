@@ -597,7 +597,7 @@ paths:
   # END Order
 
   # OrderItem
-  /orderItem:
+  /order-item:
     post:
       summary: Create
       operationId: createOrderItem
@@ -649,7 +649,7 @@ paths:
       responses:
         204:
           description: Success
-  /orderItem/{id}:
+  /order-item/{id}:
     patch:
       summary: Update
       operationId: updateOrderItemById
@@ -713,6 +713,124 @@ paths:
         204:
           description: Success
   # END OrderItem
+
+  # CourierOrder
+  /courier-order:
+    post:
+      summary: Create
+      operationId: createCourierOrder
+      tags:
+        - CourierOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierOrderRequestBody"
+      responses:
+        200:
+          description: CourierOrder Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrderSchema"
+    get:
+      summary: Get CourierOrders
+      operationId: getCourierOrders
+      tags:
+        - CourierOrder
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: CourierOrders Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrdersResponse"
+    delete:
+      summary: Delete all CourierOrders
+      tags:
+        - CourierOrder
+      operationId: deleteAllCourierOrders
+      responses:
+        204:
+          description: Success
+  /courier-order/{id}:
+    patch:
+      summary: Update
+      operationId: updateCourierOrderById
+      tags:
+        - CourierOrder
+      parameters:
+        - name: id
+          in: path
+          description: CourierOrder ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierOrderRequestBody"
+      responses:
+        200:
+          description: CourierOrder Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrderSchema"
+    get:
+      summary: Get CourierOrder by ID
+      operationId: getCourierOrderById
+      tags:
+        - CourierOrder
+      parameters:
+        - name: id
+          in: path
+          description: CourierOrder ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: CourierOrder Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrderSchema"
+    delete:
+      summary: Delete CourierOrder by ID
+      tags:
+        - CourierOrder
+      operationId: deleteOneCourierOrder
+      parameters:
+        - name: id
+          in: path
+          description: CourierOrder ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END CourierOrder
 
 components:
   schemas:
@@ -1028,3 +1146,51 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/OrderItemSchema'
+
+    CourierOrderSchema:
+      description: CourierOrder schema
+      type: object
+      required:
+        - id
+        - courier_id
+        - order_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        courier_id:
+          type: number
+        order_id:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        courier_id: 1
+        order_id: 1
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    CourierOrderRequestBody:
+      description: Create CourierOrder
+      type: object
+      required:
+        - courier_id
+        - order_id
+      properties:
+        courier_id:
+          type: number
+        order_id:
+          type: number
+      example:
+        courier_id: 1
+        order_id: 1
+    CourierOrdersResponse:
+      description: List of CourierOrders
+      type: array
+      items:
+        $ref: '#/components/schemas/CourierOrderSchema'

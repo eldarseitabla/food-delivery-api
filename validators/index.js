@@ -8,4 +8,5 @@ module.exports = {
   ...require('./customer.validator'),
   ...require('./order.validator'),
   ...require('./order-item.validator'),
+  ...require('./courier-order.validators'),
 };
