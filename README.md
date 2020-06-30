@@ -11,7 +11,7 @@
     - [x] Restaurant
     - [x] Courier
     - [x] Product
-    - [ ] Customer
+    - [x] Customer
     - [ ] Order
     - [ ] OrderItem
     - [ ] CourierOrder

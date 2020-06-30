@@ -1,4 +1,5 @@
 const express = require('express');
+const favicon = require('serve-favicon');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -17,6 +18,7 @@ const {
   restaurant,
   courier,
   product,
+  customer,
 } = require('./controllers');
 
 const init = async () => {
@@ -35,13 +37,14 @@ app.use(cors());
 app.use(performTimingMiddleware());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 app.get('/', (req, res) => { res.sendFile('./public/index.html'); });
-app.get('/favicon.ico', (req, res) => { res.sendFile('./public/favicon.png');});
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, config.swaggerUi.options));
 app.use('/restaurant', restaurant);
 app.use('/courier', courier);
 app.use('/product', product);
+app.use('/customer', customer);
 app.use('*', notFoundMiddleware);
 app.use(errorMiddleware);
 

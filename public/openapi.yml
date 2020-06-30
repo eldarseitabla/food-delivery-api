@@ -360,6 +360,124 @@ paths:
           description: Success
   # END Product
 
+  # Customer
+  /customer:
+    post:
+      summary: Create
+      operationId: createCustomer
+      tags:
+        - Customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerRequestBody"
+      responses:
+        200:
+          description: Customer Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSchema"
+    get:
+      summary: Get Customers
+      operationId: getCustomers
+      tags:
+        - Customer
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Customers Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomersResponse"
+    delete:
+      summary: Delete all Customers
+      tags:
+        - Customer
+      operationId: deleteAllCustomers
+      responses:
+        204:
+          description: Success
+  /customer/{id}:
+    patch:
+      summary: Update
+      operationId: updateCustomerById
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerRequestBody"
+      responses:
+        200:
+          description: Customer Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSchema"
+    get:
+      summary: Get Customer by ID
+      operationId: getCustomerById
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Customer Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSchema"
+    delete:
+      summary: Delete Customer by ID
+      tags:
+        - Customer
+      operationId: deleteOneCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Customer
+
 components:
   schemas:
     RestaurantSchema:
@@ -505,3 +623,51 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/ProductSchema'
+
+    CustomerSchema:
+      description: Customer schema
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Customer
+        address: Some address
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    CustomerRequestBody:
+      description: Create Customer
+      type: object
+      required:
+        - name
+        - address
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+      example:
+        name: Some Customer
+        address: Some address
+    CustomersResponse:
+      description: List of Customers
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomerSchema'
