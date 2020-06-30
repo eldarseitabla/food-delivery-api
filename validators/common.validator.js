@@ -22,12 +22,4 @@ class CommonValidator {
   }
 }
 
-/**
- * @type {module:validator.CommonValidator}
- * @name CommonValidator
- */
-CommonValidator.prototype.CommonValidator = CommonValidator;
-
-const commonValidator = new CommonValidator();
-
-module.exports = { commonValidator };
+module.exports = { CommonValidator };

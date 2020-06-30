@@ -16,6 +16,7 @@ const {
 const {
   restaurant,
   courier,
+  product,
 } = require('./controllers');
 
 const init = async () => {
@@ -40,6 +41,7 @@ app.get('/favicon.ico', (req, res) => { res.sendFile('./public/favicon.png');});
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(undefined, config.swaggerUi.options));
 app.use('/restaurant', restaurant);
 app.use('/courier', courier);
+app.use('/product', product);
 app.use('*', notFoundMiddleware);
 app.use(errorMiddleware);
 

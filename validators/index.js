@@ -4,5 +4,5 @@
 module.exports = {
   ...require('./restaurant.validator'),
   ...require('./courier.validator'),
-  ...require('./common.validator'),
+  ...require('./product.validator'),
 };

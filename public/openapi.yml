@@ -242,6 +242,124 @@ paths:
           description: Success
   # END Courier
 
+  # Product
+  /product:
+    post:
+      summary: Create
+      operationId: createProduct
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRequestBody"
+      responses:
+        200:
+          description: Product Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+    get:
+      summary: Get Products
+      operationId: getProducts
+      tags:
+        - Product
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Products Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductsResponse"
+    delete:
+      summary: Delete all Products
+      tags:
+        - Product
+      operationId: deleteAllProducts
+      responses:
+        204:
+          description: Success
+  /product/{id}:
+    patch:
+      summary: Update
+      operationId: updateProductById
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRequestBody"
+      responses:
+        200:
+          description: Product Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+    get:
+      summary: Get Product by ID
+      operationId: getProductById
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Product Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+    delete:
+      summary: Delete Product by ID
+      tags:
+        - Product
+      operationId: deleteOneProduct
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Product
+
 components:
   schemas:
     RestaurantSchema:
@@ -287,7 +405,7 @@ components:
         name: Some Restaurant
         picture: some_pic_restaurant
     RestaurantsResponse:
-      description: List of Books
+      description: List of Restaurants
       type: array
       items:
         $ref: '#/components/schemas/RestaurantSchema'
@@ -327,7 +445,63 @@ components:
       example:
         name: Some Courier
     CouriersResponse:
-      description: List of Books
+      description: List of Couriers
       type: array
       items:
         $ref: '#/components/schemas/CourierSchema'
+
+    ProductSchema:
+      description: Product schema
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - description
+        - restaurant_id
+        - picture
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        picture:
+          type: string
+        restaurant_id:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Product
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    ProductRequestBody:
+      description: Create Product
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+      example:
+        name: Some Product
+        price: 100.01
+        description: Some product description
+        restaurant_id: 1
+        picture: some_pic_product
+    ProductsResponse:
+      description: List of Products
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductSchema'

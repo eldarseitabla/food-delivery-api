@@ -1,5 +1,5 @@
 const { check, validationResult } = require('express-validator');
-const { commonValidator } = require('./common.validator');
+const { CommonValidator } = require('./common.validator');
 
 /**
  * @memberOf module:validator
@@ -7,7 +7,7 @@ const { commonValidator } = require('./common.validator');
  * @instance
  * @extends CommonValidator
  */
-class RestaurantValidator extends commonValidator.CommonValidator {
+class RestaurantValidator extends CommonValidator {
   /**
    * @param {Request} req
    * @return {Promise<Result<ValidationError>>}

@@ -10,7 +10,7 @@
 - [ ] CRUD & Swagger & Tests
     - [x] Restaurant
     - [x] Courier
-    - [ ] Product
+    - [x] Product
     - [ ] Customer
     - [ ] Order
     - [ ] OrderItem

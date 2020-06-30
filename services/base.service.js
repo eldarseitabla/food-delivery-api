@@ -1,3 +1,5 @@
+const httpErrors = require('http-errors');
+
 /**
  * @memberOf module:service
  * @class
@@ -26,6 +28,10 @@ class BaseService {
    * @return {Promise<Object>}
    */
   async updateOne (id, data) {
+    const res = await this._model.findOne(id);
+    if (!res) {
+      throw new httpErrors.NotFound('Entity not found');
+    }
     return this._model.updateOne(id, data);
   }
 
