@@ -6,4 +6,6 @@ module.exports = {
   ...require('./courier.model'),
   ...require('./product.model'),
   ...require('./customer.model'),
+  ...require('./order.model'),
+  ...require('./order-item.model'),
 };

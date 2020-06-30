@@ -6,17 +6,22 @@
 - [x] DB structure
 - [x] Migrate & Fixtures
 - [x] Mysql connect
-- [ ] Mysql Connection Pooling
+- [x] Mysql Connection Pooling
 - [ ] CRUD & Swagger & Tests
     - [x] Restaurant
     - [x] Courier
     - [x] Product
     - [x] Customer
-    - [ ] Order
-    - [ ] OrderItem
+    - [x] Order
+    - [x] OrderItem
     - [ ] CourierOrder
 
 ## Install and Use
+
+### Env
+```bash
+cp ./.env.example ./.env
+```
 
 ### API Docs
 API Docs

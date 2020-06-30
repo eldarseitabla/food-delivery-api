@@ -478,6 +478,242 @@ paths:
           description: Success
   # END Customer
 
+  # Order
+  /order:
+    post:
+      summary: Create
+      operationId: createOrder
+      tags:
+        - Order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestBody"
+      responses:
+        200:
+          description: Order Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSchema"
+    get:
+      summary: Get Orders
+      operationId: getOrders
+      tags:
+        - Order
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Orders Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersResponse"
+    delete:
+      summary: Delete all Orders
+      tags:
+        - Order
+      operationId: deleteAllOrders
+      responses:
+        204:
+          description: Success
+  /order/{id}:
+    patch:
+      summary: Update
+      operationId: updateOrderById
+      tags:
+        - Order
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestBody"
+      responses:
+        200:
+          description: Order Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSchema"
+    get:
+      summary: Get Order by ID
+      operationId: getOrderById
+      tags:
+        - Order
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Order Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSchema"
+    delete:
+      summary: Delete Order by ID
+      tags:
+        - Order
+      operationId: deleteOneOrder
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Order
+
+  # OrderItem
+  /orderItem:
+    post:
+      summary: Create
+      operationId: createOrderItem
+      tags:
+        - OrderItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderItemRequestBody"
+      responses:
+        200:
+          description: OrderItem Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemSchema"
+    get:
+      summary: Get OrderItems
+      operationId: getOrderItems
+      tags:
+        - OrderItem
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: OrderItems Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemsResponse"
+    delete:
+      summary: Delete all OrderItems
+      tags:
+        - OrderItem
+      operationId: deleteAllOrderItems
+      responses:
+        204:
+          description: Success
+  /orderItem/{id}:
+    patch:
+      summary: Update
+      operationId: updateOrderItemById
+      tags:
+        - OrderItem
+      parameters:
+        - name: id
+          in: path
+          description: OrderItem ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderItemRequestBody"
+      responses:
+        200:
+          description: OrderItem Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemSchema"
+    get:
+      summary: Get OrderItem by ID
+      operationId: getOrderItemById
+      tags:
+        - OrderItem
+      parameters:
+        - name: id
+          in: path
+          description: OrderItem ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: OrderItem Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemSchema"
+    delete:
+      summary: Delete OrderItem by ID
+      tags:
+        - OrderItem
+      operationId: deleteOneOrderItem
+      parameters:
+        - name: id
+          in: path
+          description: OrderItem ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END OrderItem
+
 components:
   schemas:
     RestaurantSchema:
@@ -671,3 +907,124 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CustomerSchema'
+
+    OrderSchema:
+      description: Order schema
+      type: object
+      required:
+        - id
+        - customer_id
+        - payment_status
+        - status
+        - address
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        customer_id:
+          type: number
+        payment_status:
+          type: string
+        status:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        customer_id: 1
+        payment_status: notPaid
+        status: created
+        address: some address
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    OrderRequestBody:
+      description: Create Order
+      type: object
+      required:
+        - customer_id
+        - payment_status
+        - status
+      properties:
+        customer_id:
+          type: number
+        payment_status:
+          type: string
+        status:
+          type: string
+        address:
+          type: string
+      example:
+        customer_id: 1
+        payment_status: notPaid
+        status: created
+        address: some address
+    OrdersResponse:
+      description: List of Orders
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderSchema'
+
+    OrderItemSchema:
+      description: OrderItem schema
+      type: object
+      required:
+        - id
+        - order_id
+        - product_id
+        - price
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        order_id:
+          type: number
+        product_id:
+          type: number
+        price:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        order_id: 1
+        product_id: 1
+        price: 102.04
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    OrderItemRequestBody:
+      description: Create OrderItem
+      type: object
+      required:
+        - order_id
+        - product_id
+        - price
+      properties:
+        order_id:
+          type: number
+        restaurant_id:
+          type: number
+        product_id:
+          type: number
+        price:
+          type: number
+      example:
+        order_id: 1
+        product_id: 1
+        price: 120.70
+    OrderItemsResponse:
+      description: List of OrderItems
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderItemSchema'
