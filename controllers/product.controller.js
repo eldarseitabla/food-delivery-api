@@ -1,25 +1,26 @@
 const { Router } = require('express');
 const httpErrors = require('http-errors');
-const { restaurantService } = require('../services');
-const { restaurantValidator } = require('../validators');
+const { productService } = require('../services');
+const { productValidator } = require('../validators');
 
 /**
  * @memberOf module:controller
  * @class
  * @instance
  */
-class RestaurantController {
+class ProductController {
   /**
-   * @param {module:service.RestaurantService} restaurantService
-   * @param {module:validator.RestaurantValidator} restaurantValidator
+   * @param {module:service.ProductService} productService
+   * @param {module:validator.ProductValidator} productValidator
    */
-  constructor (restaurantService, restaurantValidator) {
-    /** @type {module:service.RestaurantService}
+  constructor (productService, productValidator) {
+    /** @type {module:service.ProductService}
      * @private */
-    this._service = restaurantService;
-    /** @type {module:validator.RestaurantValidator}
+    this._service = productService;
+
+    /** @type {module:validator.ProductValidator}
      * @private */
-    this._validator = restaurantValidator;
+    this._validator = productValidator;
   }
 
   /**
@@ -34,8 +35,8 @@ class RestaurantController {
       return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
     }
     try {
-      const { name, picture } = req.body;
-      const result = await this._service.create({ name, picture });
+      const { name, price, description, picture, restaurant_id } = req.body;
+      const result = await this._service.create({ name, price, description, picture, restaurant_id });
       res.json(result);
     } catch (err) {
       next(err);
@@ -50,8 +51,8 @@ class RestaurantController {
 
     try {
       const { id } = req.params;
-      const { name, picture } = req.body;
-      const result = await this._service.updateOne(id, { name, picture });
+      const { name, price, description, picture, restaurant_id } = req.body;
+      const result = await this._service.updateOne(id, { name, price, description, picture, restaurant_id });
       res.json(result);
     } catch (err) {
       next(err);
@@ -62,7 +63,7 @@ class RestaurantController {
     const { id } = req.params;
     const result = await this._service.findOne(id);
     if (!result) {
-      return next(new httpErrors(404, 'Restaurant not found'));
+      return next(new httpErrors(404, 'Product not found'));
     }
     res.json(result);
   }
@@ -88,36 +89,36 @@ class RestaurantController {
     res.status(204).send();
   }
 }
-const restaurantController = new RestaurantController(restaurantService, restaurantValidator);
+const productController = new ProductController(productService, productValidator);
 
-const restaurant = Router();
+const product = Router();
 
-// Create restaurant
-restaurant.post('', async (req, res, next) => {
-  await restaurantController.create(req, res, next);
+// Create product
+product.post('', async (req, res, next) => {
+  await productController.create(req, res, next);
 });
 
-// Update restaurant
-restaurant.patch('/:id(\\d+)', async (req, res, next) => {
-  await restaurantController.updateOne(req, res, next);
+// Update product
+product.patch('/:id(\\d+)', async (req, res, next) => {
+  await productController.updateOne(req, res, next);
 });
 
-// Get restaurant by id
-restaurant.get('/:id(\\d+)', async (req, res, next) => {
-  await restaurantController.findOne(req, res, next);
+// Get product by id
+product.get('/:id(\\d+)', async (req, res, next) => {
+  await productController.findOne(req, res, next);
 });
 
-// Get many restaurants
-restaurant.get('', async (req, res, next) => {
-  await restaurantController.findAll(req, res, next);
+// Get many products
+product.get('', async (req, res, next) => {
+  await productController.findAll(req, res, next);
 });
 
-restaurant.delete('/:id', async (req, res) => {
-  await restaurantController.deleteOne(req, res);
+product.delete('/:id', async (req, res) => {
+  await productController.deleteOne(req, res);
 });
 
-restaurant.delete('', async (req, res) => {
-  await restaurantController.deleteAll(req, res);
+product.delete('', async (req, res) => {
+  await productController.deleteAll(req, res);
 });
 
-module.exports = { restaurant };
+module.exports = { product };

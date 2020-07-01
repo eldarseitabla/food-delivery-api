@@ -6,28 +6,1191 @@ info:
   description: "Demo Food delivery API"
 
 paths:
-  /restaurant/test:
-    get:
-      summary: Test
+  # Restaurant
+  /restaurant:
+    post:
+      summary: Create
+      operationId: createRestaurant
       tags:
-        - Test
+        - Restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestaurantRequestBody"
       responses:
         200:
-          $ref: "#/components/responses/Response"
+          description: Restaurant Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantSchema"
+    get:
+      summary: Get Restaurants
+      operationId: getRestaurants
+      tags:
+        - Restaurant
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Restaurants Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantsResponse"
+    delete:
+      summary: Delete all Restaurants
+      tags:
+        - Restaurant
+      operationId: deleteAllRestaurants
+      responses:
+        204:
+          description: Success
+  /restaurant/{id}:
+    patch:
+      summary: Update
+      operationId: updateRestaurantById
+      tags:
+        - Restaurant
+      parameters:
+        - name: id
+          in: path
+          description: Restaurant ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RestaurantRequestBody"
+      responses:
+        200:
+          description: Restaurant Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantSchema"
+    get:
+      summary: Get Restaurant by ID
+      operationId: getRestaurantById
+      tags:
+        - Restaurant
+      parameters:
+        - name: id
+          in: path
+          description: Restaurant ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Restaurant Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RestaurantSchema"
+    delete:
+      summary: Delete Restaurant by ID
+      tags:
+        - Restaurant
+      operationId: deleteOneRestaurant
+      parameters:
+        - name: id
+          in: path
+          description: Restaurant ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Restaurant
+
+  # Courier
+  /courier:
+    post:
+      summary: Create
+      operationId: createCourier
+      tags:
+        - Courier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierRequestBody"
+      responses:
+        200:
+          description: Courier Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierSchema"
+    get:
+      summary: Get Couriers
+      operationId: getCouriers
+      tags:
+        - Courier
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Couriers Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CouriersResponse"
+    delete:
+      summary: Delete all Couriers
+      tags:
+        - Courier
+      operationId: deleteAllCouriers
+      responses:
+        204:
+          description: Success
+  /courier/{id}:
+    patch:
+      summary: Update
+      operationId: updateCourierById
+      tags:
+        - Courier
+      parameters:
+        - name: id
+          in: path
+          description: Courier ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierRequestBody"
+      responses:
+        200:
+          description: Courier Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierSchema"
+    get:
+      summary: Get Courier by ID
+      operationId: getCourierById
+      tags:
+        - Courier
+      parameters:
+        - name: id
+          in: path
+          description: Courier ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Courier Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierSchema"
+    delete:
+      summary: Delete Courier by ID
+      tags:
+        - Courier
+      operationId: deleteOneCourier
+      parameters:
+        - name: id
+          in: path
+          description: Courier ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Courier
+
+  # Product
+  /product:
+    post:
+      summary: Create
+      operationId: createProduct
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRequestBody"
+      responses:
+        200:
+          description: Product Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+    get:
+      summary: Get Products
+      operationId: getProducts
+      tags:
+        - Product
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Products Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductsResponse"
+    delete:
+      summary: Delete all Products
+      tags:
+        - Product
+      operationId: deleteAllProducts
+      responses:
+        204:
+          description: Success
+  /product/{id}:
+    patch:
+      summary: Update
+      operationId: updateProductById
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductRequestBody"
+      responses:
+        200:
+          description: Product Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+    get:
+      summary: Get Product by ID
+      operationId: getProductById
+      tags:
+        - Product
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Product Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+    delete:
+      summary: Delete Product by ID
+      tags:
+        - Product
+      operationId: deleteOneProduct
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Product
+
+  # Customer
+  /customer:
+    post:
+      summary: Create
+      operationId: createCustomer
+      tags:
+        - Customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerRequestBody"
+      responses:
+        200:
+          description: Customer Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSchema"
+    get:
+      summary: Get Customers
+      operationId: getCustomers
+      tags:
+        - Customer
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Customers Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomersResponse"
+    delete:
+      summary: Delete all Customers
+      tags:
+        - Customer
+      operationId: deleteAllCustomers
+      responses:
+        204:
+          description: Success
+  /customer/{id}:
+    patch:
+      summary: Update
+      operationId: updateCustomerById
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerRequestBody"
+      responses:
+        200:
+          description: Customer Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSchema"
+    get:
+      summary: Get Customer by ID
+      operationId: getCustomerById
+      tags:
+        - Customer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Customer Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerSchema"
+    delete:
+      summary: Delete Customer by ID
+      tags:
+        - Customer
+      operationId: deleteOneCustomer
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Customer
+
+  # Order
+  /order:
+    post:
+      summary: Create
+      operationId: createOrder
+      tags:
+        - Order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestBody"
+      responses:
+        200:
+          description: Order Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSchema"
+    get:
+      summary: Get Orders
+      operationId: getOrders
+      tags:
+        - Order
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: Orders Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrdersResponse"
+    delete:
+      summary: Delete all Orders
+      tags:
+        - Order
+      operationId: deleteAllOrders
+      responses:
+        204:
+          description: Success
+  /order/{id}:
+    patch:
+      summary: Update
+      operationId: updateOrderById
+      tags:
+        - Order
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderRequestBody"
+      responses:
+        200:
+          description: Order Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSchema"
+    get:
+      summary: Get Order by ID
+      operationId: getOrderById
+      tags:
+        - Order
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: Order Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderSchema"
+    delete:
+      summary: Delete Order by ID
+      tags:
+        - Order
+      operationId: deleteOneOrder
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END Order
+
+  # OrderItem
+  /order-item:
+    post:
+      summary: Create
+      operationId: createOrderItem
+      tags:
+        - OrderItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderItemRequestBody"
+      responses:
+        200:
+          description: OrderItem Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemSchema"
+    get:
+      summary: Get OrderItems
+      operationId: getOrderItems
+      tags:
+        - OrderItem
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: OrderItems Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemsResponse"
+    delete:
+      summary: Delete all OrderItems
+      tags:
+        - OrderItem
+      operationId: deleteAllOrderItems
+      responses:
+        204:
+          description: Success
+  /order-item/{id}:
+    patch:
+      summary: Update
+      operationId: updateOrderItemById
+      tags:
+        - OrderItem
+      parameters:
+        - name: id
+          in: path
+          description: OrderItem ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderItemRequestBody"
+      responses:
+        200:
+          description: OrderItem Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemSchema"
+    get:
+      summary: Get OrderItem by ID
+      operationId: getOrderItemById
+      tags:
+        - OrderItem
+      parameters:
+        - name: id
+          in: path
+          description: OrderItem ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: OrderItem Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderItemSchema"
+    delete:
+      summary: Delete OrderItem by ID
+      tags:
+        - OrderItem
+      operationId: deleteOneOrderItem
+      parameters:
+        - name: id
+          in: path
+          description: OrderItem ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END OrderItem
+
+  # CourierOrder
+  /courier-order:
+    post:
+      summary: Create
+      operationId: createCourierOrder
+      tags:
+        - CourierOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierOrderRequestBody"
+      responses:
+        200:
+          description: CourierOrder Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrderSchema"
+    get:
+      summary: Get CourierOrders
+      operationId: getCourierOrders
+      tags:
+        - CourierOrder
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The number of items to skip before starting to collect the result set
+          example: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: The numbers of items to return
+          example: 10
+      responses:
+        200:
+          description: CourierOrders Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrdersResponse"
+    delete:
+      summary: Delete all CourierOrders
+      tags:
+        - CourierOrder
+      operationId: deleteAllCourierOrders
+      responses:
+        204:
+          description: Success
+  /courier-order/{id}:
+    patch:
+      summary: Update
+      operationId: updateCourierOrderById
+      tags:
+        - CourierOrder
+      parameters:
+        - name: id
+          in: path
+          description: CourierOrder ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourierOrderRequestBody"
+      responses:
+        200:
+          description: CourierOrder Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrderSchema"
+    get:
+      summary: Get CourierOrder by ID
+      operationId: getCourierOrderById
+      tags:
+        - CourierOrder
+      parameters:
+        - name: id
+          in: path
+          description: CourierOrder ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        200:
+          description: CourierOrder Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CourierOrderSchema"
+    delete:
+      summary: Delete CourierOrder by ID
+      tags:
+        - CourierOrder
+      operationId: deleteOneCourierOrder
+      parameters:
+        - name: id
+          in: path
+          description: CourierOrder ID
+          required: true
+          schema:
+            type: number
+          example: 1
+      responses:
+        204:
+          description: Success
+  # END CourierOrder
 
 components:
-  responses:
-    Response:
-      description: Common response
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - message
-            properties:
-              message:
-                type: string
-                enum:
-                  - Success
-                  - Request body has wrong format
+  schemas:
+    RestaurantSchema:
+      description: Restaurant schema
+      type: object
+      required:
+        - id
+        - name
+        - picture
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        picture:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Restaurant
+        picture: some_pic_restaurant
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    RestaurantRequestBody:
+      description: Create Restaurant
+      type: object
+      required:
+        - name
+        - picture
+      properties:
+        name:
+          type: string
+        picture:
+          type: string
+      example:
+        name: Some Restaurant
+        picture: some_pic_restaurant
+    RestaurantsResponse:
+      description: List of Restaurants
+      type: array
+      items:
+        $ref: '#/components/schemas/RestaurantSchema'
+
+    CourierSchema:
+      description: Courier schema
+      type: object
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Courier
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    CourierRequestBody:
+      description: Create Courier
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+      example:
+        name: Some Courier
+    CouriersResponse:
+      description: List of Couriers
+      type: array
+      items:
+        $ref: '#/components/schemas/CourierSchema'
+
+    ProductSchema:
+      description: Product schema
+      type: object
+      required:
+        - id
+        - name
+        - price
+        - description
+        - restaurant_id
+        - picture
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        picture:
+          type: string
+        restaurant_id:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Product
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    ProductRequestBody:
+      description: Create Product
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+      example:
+        name: Some Product
+        price: 100.01
+        description: Some product description
+        restaurant_id: 1
+        picture: some_pic_product
+    ProductsResponse:
+      description: List of Products
+      type: array
+      items:
+        $ref: '#/components/schemas/ProductSchema'
+
+    CustomerSchema:
+      description: Customer schema
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        name: Some Customer
+        address: Some address
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    CustomerRequestBody:
+      description: Create Customer
+      type: object
+      required:
+        - name
+        - address
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+      example:
+        name: Some Customer
+        address: Some address
+    CustomersResponse:
+      description: List of Customers
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomerSchema'
+
+    OrderSchema:
+      description: Order schema
+      type: object
+      required:
+        - id
+        - customer_id
+        - payment_status
+        - status
+        - address
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        customer_id:
+          type: number
+        payment_status:
+          type: string
+        status:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        customer_id: 1
+        payment_status: notPaid
+        status: created
+        address: some address
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    OrderRequestBody:
+      description: Create Order
+      type: object
+      required:
+        - customer_id
+        - payment_status
+        - status
+      properties:
+        customer_id:
+          type: number
+        payment_status:
+          type: string
+        status:
+          type: string
+        address:
+          type: string
+      example:
+        customer_id: 1
+        payment_status: notPaid
+        status: created
+        address: some address
+    OrdersResponse:
+      description: List of Orders
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderSchema'
+
+    OrderItemSchema:
+      description: OrderItem schema
+      type: object
+      required:
+        - id
+        - order_id
+        - product_id
+        - price
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        order_id:
+          type: number
+        product_id:
+          type: number
+        price:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        order_id: 1
+        product_id: 1
+        price: 102.04
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    OrderItemRequestBody:
+      description: Create OrderItem
+      type: object
+      required:
+        - order_id
+        - product_id
+        - price
+      properties:
+        order_id:
+          type: number
+        restaurant_id:
+          type: number
+        product_id:
+          type: number
+        price:
+          type: number
+      example:
+        order_id: 1
+        product_id: 1
+        price: 120.70
+    OrderItemsResponse:
+      description: List of OrderItems
+      type: array
+      items:
+        $ref: '#/components/schemas/OrderItemSchema'
+
+    CourierOrderSchema:
+      description: CourierOrder schema
+      type: object
+      required:
+        - id
+        - courier_id
+        - order_id
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: number
+        courier_id:
+          type: number
+        order_id:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        id: 1
+        courier_id: 1
+        order_id: 1
+        created_at: '2020-02-10 17:32:28'
+        updated_at: '2020-02-10 17:32:28'
+    CourierOrderRequestBody:
+      description: Create CourierOrder
+      type: object
+      required:
+        - courier_id
+        - order_id
+      properties:
+        courier_id:
+          type: number
+        order_id:
+          type: number
+      example:
+        courier_id: 1
+        order_id: 1
+    CourierOrdersResponse:
+      description: List of CourierOrders
+      type: array
+      items:
+        $ref: '#/components/schemas/CourierOrderSchema'

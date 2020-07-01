@@ -70,6 +70,20 @@ const config = {
       },
     },
   },
+  order: {
+    paymentStatus: {
+      notPaid: 'notPaid',
+      paid: 'paid',
+      paymentUponReceipt: 'paymentUponReceipt',
+    },
+    status: {
+      created: 'created',
+      active: 'active',
+      inProgress: 'inProgress',
+      done: 'done',
+      canceled: 'canceled',
+    },
+  },
 };
 
 module.exports = { config };

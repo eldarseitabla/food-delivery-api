@@ -63,43 +63,44 @@ CREATE TABLE IF NOT EXISTS `order` (
   customer_id       BIGINT(20)       NOT NULL,
   payment_status    ENUM('notPaid', 'paid', 'paymentUponReceipt') NOT NULL,
   status            ENUM('created', 'active', 'inProgress', 'done', 'canceled') NOT NULL,
+  address           VARCHAR(255)    NOT NULL,
   created_at        TIMESTAMP       NOT NULL DEFAULT NOW(),
   updated_at        TIMESTAMP       NOT NULL DEFAULT NOW() ON UPDATE now(),
   INDEX customer_id_idx (customer_id),
   FOREIGN KEY (customer_id)
     REFERENCES customer(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO `order` (customer_id, payment_status, status)
-    VALUES (1, 'notPaid', 'created');
+INSERT INTO `order` (customer_id, payment_status, status, address)
+    VALUES (1, 'notPaid', 'created', 'some address');
 
 CREATE TABLE IF NOT EXISTS order_item (
   id                BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
   order_id          BIGINT(20)      NOT NULL,
-  restaurant_id     BIGINT(20)      NOT NULL,
   product_id        BIGINT(20)      NOT NULL,
   price             DECIMAL(13,2)   NOT NULL,
-  address           VARCHAR(255)    NOT NULL,
   created_at        TIMESTAMP       NOT NULL DEFAULT NOW(),
   updated_at        TIMESTAMP       NOT NULL DEFAULT NOW() ON UPDATE now(),
-  INDEX restaurant_id_idx (restaurant_id),
   INDEX order_id_idx (order_id),
   INDEX product_id_idx (product_id),
   FOREIGN KEY (order_id)
     REFERENCES `order`(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id)
-    REFERENCES product(id) ON DELETE CASCADE,
-  FOREIGN KEY (restaurant_id)
-    REFERENCES restaurant(id) ON DELETE CASCADE
+    REFERENCES product(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO order_item (order_id, restaurant_id, product_id, price, address)
-    VALUES (1, 1, 1, 110.50, 'some address 1');
+INSERT INTO order_item (order_id, product_id, price)
+    VALUES (1, 1, 110.50);
 
 CREATE TABLE IF NOT EXISTS courier_order (
   id            BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
+  courier_id    BIGINT(20)         NOT NULL,
   order_id      BIGINT(20)         NOT NULL,
   created_at    TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at    TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now(),
+  INDEX courier_id_idx (courier_id),
+  FOREIGN KEY (courier_id)
+    REFERENCES courier(id) ON DELETE CASCADE,
   INDEX order_id_idx (order_id),
-  FOREIGN KEY (order_id) REFERENCES `order`(id) ON DELETE CASCADE
+  FOREIGN KEY (order_id)
+    REFERENCES `order`(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO courier_order (order_id) VALUES (1);
+INSERT INTO courier_order (courier_id, order_id) VALUES (1, 1);

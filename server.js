@@ -1,5 +1,6 @@
 const { config } = require('./config');
 const { getLogger } = require('log4js');
+
 const { app } = require('./app');
 
 const logger = getLogger('[server]');
@@ -16,7 +17,8 @@ let server;
   }
 })();
 
-process.on('SIGINT', () => {
+process.on('SIGINT', async () => {
+  await app.get('shutdown')();
   server.close((error) => {
     if (error) {
       logger.error(`SIGINT ${error.message}`);
@@ -27,7 +29,8 @@ process.on('SIGINT', () => {
   });
 });
 
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async () => {
+  await app.get('shutdown')();
   server.close((error) => {
     if (error) {
       logger.error(`SIGTERM ${error.message}`);

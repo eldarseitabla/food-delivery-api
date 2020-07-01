@@ -6,7 +6,10 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_ROOT_PASSWORD: 'pass'
+      MYSQL_DATABASE: 'food_delivery_db'
+      MYSQL_USER: 'mysql_user'
+      MYSQL_PASSWORD: 'mysql_pass'
     command: --init-file /data/application/init.sql
     volumes:
       - $DOCKER_VOLUMES/mysql/var/lib/mysql:/var/lib/mysql
