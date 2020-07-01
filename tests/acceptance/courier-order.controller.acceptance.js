@@ -8,6 +8,7 @@ const {
   orderService,
 } = require('../../services');
 const { config } = require('../../config');
+const { filter } = require('../helpers/utils');
 
 describe('courier-order.controller (acceptance)', () => {
   const testCourier = { name: 'Rock' };
@@ -61,7 +62,7 @@ describe('courier-order.controller (acceptance)', () => {
     await courierOrderService.create({ courier_id, order_id });
 
     const { body: result } = await request(app)
-      .get('/courier-order?limit=10')
+      .get(`/courier-order?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -132,7 +133,7 @@ describe('courier-order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/courier-order?limit=10')
+      .get('/courier-order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -145,7 +146,7 @@ describe('courier-order.controller (acceptance)', () => {
     await courierOrderService.create({ courier_id, order_id });
     await courierOrderService.create({ courier_id, order_id });
     const { body: resultAfterCreated } = await request(app)
-      .get('/courier-order?limit=10')
+      .get('/courier-order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -154,7 +155,7 @@ describe('courier-order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/courier-order?limit=10')
+      .get('/courier-order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 

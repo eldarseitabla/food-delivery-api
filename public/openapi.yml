@@ -33,17 +33,11 @@ paths:
         - Restaurant
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonFilter"
       responses:
         200:
           description: Restaurants Response
@@ -51,6 +45,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RestaurantsResponse"
+
     delete:
       summary: Delete all Restaurants
       tags:
@@ -151,17 +146,11 @@ paths:
         - Courier
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonFilter"
       responses:
         200:
           description: Couriers Response
@@ -269,17 +258,39 @@ paths:
         - Product
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    minimum: 0
+                    example: 0
+                  limit:
+                    type: integer
+                    minimum: 1
+                    example: 100
+                  where:
+                    type: object
+                    properties:
+                      field:
+                        type: string
+                        example: restaurant_id
+                      value:
+                        type: integer
+                        example: 1
+                  order_by:
+                    type: object
+                    properties:
+                      sort_direction:
+                        type: string
+                        enum: [ASC, DESC]
+                        example: ASC
+                      field:
+                        type: string
+                        example: created_at
       responses:
         200:
           description: Products Response
@@ -387,17 +398,11 @@ paths:
         - Customer
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonFilter"
       responses:
         200:
           description: Customers Response
@@ -505,17 +510,11 @@ paths:
         - Order
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonFilter"
       responses:
         200:
           description: Orders Response
@@ -623,17 +622,11 @@ paths:
         - OrderItem
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonFilter"
       responses:
         200:
           description: OrderItems Response
@@ -741,17 +734,11 @@ paths:
         - CourierOrder
       parameters:
         - in: query
-          name: offset
-          schema:
-            type: integer
-          description: The number of items to skip before starting to collect the result set
-          example: 0
-        - in: query
-          name: limit
-          schema:
-            type: integer
-          description: The numbers of items to return
-          example: 10
+          name: filter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommonFilter"
       responses:
         200:
           description: CourierOrders Response
@@ -1194,3 +1181,24 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CourierOrderSchema'
+    CommonFilter:
+      type: object
+      properties:
+        offset:
+          type: integer
+          minimum: 0
+          example: 0
+        limit:
+          type: integer
+          minimum: 1
+          example: 100
+        order_by:
+          type: object
+          properties:
+            sort_direction:
+              type: string
+              enum: [ASC, DESC]
+              example: ASC
+            field:
+              type: string
+              example: created_at

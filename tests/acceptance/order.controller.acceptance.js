@@ -2,6 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const { app } = require('../../app');
 const { orderService, customerService } = require('../../services');
+const { filter } = require('../helpers/utils');
 
 describe('order.controller (acceptance)', () => {
   const data = { payment_status: 'notPaid', status: 'created', address: 'some address' };
@@ -42,7 +43,7 @@ describe('order.controller (acceptance)', () => {
     });
 
     const { body: result } = await request(app)
-      .get('/order?limit=10')
+      .get(`/order?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -117,7 +118,7 @@ describe('order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/order?limit=10')
+      .get('/order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -130,7 +131,7 @@ describe('order.controller (acceptance)', () => {
     await orderService.create({ ...data, customer_id: customer.id });
     await orderService.create({ ...data, name: 'Second order', customer_id: customer.id });
     const { body: resultAfterCreated } = await request(app)
-      .get('/order?limit=10')
+      .get('/order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -139,7 +140,7 @@ describe('order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/order?limit=10')
+      .get('/order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 

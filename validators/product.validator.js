@@ -30,6 +30,28 @@ class ProductValidator extends CommonValidator {
     await check('restaurant_id', `restaurant_id must be number min ${min}`).isInt({ min }).run(req);
     return validationResult(req);
   }
+
+  async checkFilter (req) {
+    const errorsFilter = await super.checkFilter(req);
+    if (!errorsFilter.isEmpty()) {
+      return errorsFilter;
+    }
+    const min = 1;
+    if (req.query.filter !== undefined) {
+
+      if (req.query.filter.where !== undefined) {
+        await check('filter.where.field', `filter.where.field must be number min ${min}`).isIn(['restaurant_id']).run(req);
+        await check('filter.where.value', `filter.where.value must be number min ${min}`).isInt({ min }).run(req);
+      }
+
+      if (req.query.filter.order_by !== undefined) {
+        await check('filter.order_by.sort_direction', 'filter.order_by must be ASC | DESC').isIn(['ASC', 'DESC']).run(req);
+
+        await check('filter.order_by.field', 'filter.order_by.field is empty').not().isEmpty().run(req);
+      }
+    }
+    return validationResult(req);
+  }
 }
 
 /**

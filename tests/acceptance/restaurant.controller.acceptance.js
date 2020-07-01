@@ -2,6 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const { app } = require('../../app');
 const { restaurantService } = require('../../services');
+const { filter } = require('../helpers/utils');
 
 describe('restaurant.controller (acceptance)', () => {
   const data = { name: 'Test Restaurant', picture: 'some_pic_test' };
@@ -32,7 +33,7 @@ describe('restaurant.controller (acceptance)', () => {
     await restaurantService.create(data);
 
     const { body: result } = await request(app)
-      .get('/restaurant?limit=10')
+      .get(`/restaurant?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -94,7 +95,7 @@ describe('restaurant.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/restaurant?limit=10')
+      .get('/restaurant')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -106,7 +107,7 @@ describe('restaurant.controller (acceptance)', () => {
     await restaurantService.create(data);
     await restaurantService.create({ name: 'Second restaurant', picture: data.picture });
     const { body: resultAfterCreated } = await request(app)
-      .get('/restaurant?limit=10')
+      .get('/restaurant')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -115,7 +116,7 @@ describe('restaurant.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/restaurant?limit=10')
+      .get('/restaurant')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 

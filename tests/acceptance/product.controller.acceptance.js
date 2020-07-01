@@ -2,6 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const { app } = require('../../app');
 const { productService, restaurantService } = require('../../services');
+const { filter } = require('../helpers/utils');
 
 describe('product.controller (acceptance)', () => {
   const data = { name: 'Test product', price: 201.04, description: 'Test description', picture: 'some_pic_product' };
@@ -34,6 +35,50 @@ describe('product.controller (acceptance)', () => {
     assert.deepStrictEqual(result, expects);
   });
 
+  it('get many by restaurant id', async () => {
+    const restaurant = await restaurantService.create(testRestaurant);
+    const restaurant2 = await restaurantService.create({ name: 'Test restaurant second', ...testRestaurant });
+    await productService.create({
+      restaurant_id: restaurant.id,
+      ...data,
+    });
+
+    await productService.create({
+      restaurant_id: restaurant2.id,
+      ...data,
+    });
+
+    const filterByRestaurantId = JSON.stringify({
+      where: {
+        field: 'restaurant_id',
+        value: restaurant.id,
+      },
+      order_by: {
+        sort_direction: 'ASC',
+        field: 'created_at',
+      },
+      offset: 0,
+      limit: 10,
+    });
+
+    const { body: result } = await request(app)
+      .get(`/product?filter=${encodeURIComponent(filterByRestaurantId)}`)
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(200);
+
+    const expects = {
+      id: result[0].id,
+      created_at: result[0].created_at,
+      updated_at: result[0].updated_at,
+      restaurant_id: restaurant.id,
+      ...data,
+    };
+
+    assert.strictEqual(Array.isArray(result), true);
+    assert.strictEqual(result.length, 1);
+    assert.deepStrictEqual(result[0], expects);
+  });
+
   it('get many', async () => {
     const restaurant = await restaurantService.create(testRestaurant);
     await productService.create({
@@ -42,7 +87,7 @@ describe('product.controller (acceptance)', () => {
     });
 
     const { body: result } = await request(app)
-      .get('/product?limit=10')
+      .get(`/product?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -117,7 +162,7 @@ describe('product.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/product?limit=10')
+      .get('/product')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -130,7 +175,7 @@ describe('product.controller (acceptance)', () => {
     await productService.create({ ...data, restaurant_id: restaurant.id });
     await productService.create({ ...data, name: 'Second product', restaurant_id: restaurant.id });
     const { body: resultAfterCreated } = await request(app)
-      .get('/product?limit=10')
+      .get('/product')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -139,7 +184,7 @@ describe('product.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/product?limit=10')
+      .get('/product')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 

@@ -69,12 +69,12 @@ class OrderItemController {
   }
 
   async findAll (req, res, next) {
-    const errorsPagination = await this._validator.checkPagination(req);
-    if (!errorsPagination.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsPagination.array())));
+    const errorsFilter = await this._validator.checkFilter(req);
+    if (!errorsFilter.isEmpty()) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsFilter.array())));
     }
-    const { limit, offset } = req.query;
-    const result = await this._service.findAll(limit, offset);
+    const { filter } = req.query;
+    const result = await this._service.findAll(filter);
     res.json(result);
   }
 

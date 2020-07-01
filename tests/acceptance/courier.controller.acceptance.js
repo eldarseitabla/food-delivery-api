@@ -2,6 +2,7 @@ const request = require('supertest');
 const assert = require('assert');
 const { app } = require('../../app');
 const { courierService } = require('../../services');
+const { filter } = require('../helpers/utils');
 
 describe('courier.controller (acceptance)', () => {
   const data = { name: 'Test Courier' };
@@ -29,9 +30,8 @@ describe('courier.controller (acceptance)', () => {
 
   it('get many', async () => {
     await courierService.create(data);
-
     const { body: result } = await request(app)
-      .get('/courier?limit=10')
+      .get(`/courier?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -90,7 +90,7 @@ describe('courier.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/courier?limit=10')
+      .get('/courier')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -102,7 +102,7 @@ describe('courier.controller (acceptance)', () => {
     await courierService.create(data);
     await courierService.create({ name: 'Second courier' });
     const { body: resultAfterCreated } = await request(app)
-      .get('/courier?limit=10')
+      .get('/courier')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -111,7 +111,7 @@ describe('courier.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/courier?limit=10')
+      .get('/courier')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
