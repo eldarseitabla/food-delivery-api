@@ -51,8 +51,8 @@ class CourierOrderController {
         return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { id } = req.params;
-      const { courier_id, order_id } = req.body;
-      const result = await this._service.updateOne(id, { courier_id, order_id });
+      const { courier_id, order_id, statusOrder } = req.body;
+      const result = await this._service.updateOne(id, { courier_id, order_id, statusOrder });
       res.json(result);
     } catch (err) {
       next(err);

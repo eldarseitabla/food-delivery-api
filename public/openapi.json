@@ -1143,7 +1143,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CourierOrderRequestBody"
+                "$ref": "#/components/schemas/CourierOrderRequestBodyUpdate"
               }
             }
           }
@@ -1744,6 +1744,31 @@
         "example": {
           "courier_id": 1,
           "order_id": 1
+        }
+      },
+      "CourierOrderRequestBodyUpdate": {
+        "description": "Create CourierOrder",
+        "type": "object",
+        "required": [
+          "courier_id",
+          "order_id"
+        ],
+        "properties": {
+          "courier_id": {
+            "type": "number"
+          },
+          "order_id": {
+            "type": "number"
+          },
+          "statusOrder": {
+            "type": "string",
+            "enum": ["active", "inProgress", "done", "canceled"]
+          }
+        },
+        "example": {
+          "courier_id": 1,
+          "order_id": 1,
+          "statusOrder": "done"
         }
       },
       "CourierOrdersResponse": {
