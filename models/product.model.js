@@ -1,7 +1,7 @@
 const httpErrors = require('http-errors');
 const { BaseModel } = require('./base.model');
 const { mysqlClient } = require('../db');
-const { restaurantModel } = require('./restaurant.model');
+const { mysqlTables } = require('../constants');
 
 // TODO DAL
 
@@ -20,11 +20,11 @@ class ProductModel extends BaseModel {
     /**
      * @type {string}
      */
-    this.table = 'product';
+    this.table = mysqlTables.product;
   }
 
   async _checkParent (id) {
-    const result = await this._db(restaurantModel.table).where('id', id);
+    const result = await this._db(mysqlTables.restaurant).where('id', id);
     if (!result[0]) {
       throw new httpErrors.UnprocessableEntity(`Not a restaurant with such id: ${id}`);
     }

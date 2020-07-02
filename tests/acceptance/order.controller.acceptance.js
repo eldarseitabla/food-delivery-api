@@ -5,7 +5,7 @@ const { orderService, customerService } = require('../../services');
 const { filter } = require('../helpers/utils');
 
 describe('order.controller (acceptance)', () => {
-  const data = { payment_status: 'notPaid', status: 'created', address: 'some address' };
+  const data = { payment_status: 'notPaid', status: 'created', address: 'some address', orderItems: [] };
   const testCustomer = { name: 'Test customer', address: 'test address' };
 
   beforeEach('before each', async () => {
@@ -52,7 +52,9 @@ describe('order.controller (acceptance)', () => {
       created_at: result[0].created_at,
       updated_at: result[0].updated_at,
       customer_id: customer.id,
-      ...data,
+      payment_status: data.payment_status,
+      status: data.status,
+      address: data.address,
     };
 
     assert.strictEqual(Array.isArray(result), true);

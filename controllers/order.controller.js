@@ -36,8 +36,8 @@ class OrderController {
         return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
 
-      const { customer_id, payment_status, status, address } = req.body;
-      const result = await this._service.create({ customer_id, payment_status, status, address });
+      const { customer_id, payment_status, status, address, orderItems } = req.body;
+      const result = await this._service.create({ customer_id, payment_status, status, address, orderItems });
       res.json(result);
     } catch (err) {
       next(err);
@@ -51,8 +51,8 @@ class OrderController {
         return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { id } = req.params;
-      const { customer_id, payment_status, status, address } = req.body;
-      const result = await this._service.updateOne(id, { customer_id, payment_status, status, address });
+      const { customer_id, payment_status, status, address, orderItems } = req.body;
+      const result = await this._service.updateOne(id, { customer_id, payment_status, status, address, orderItems });
       res.json(result);
     } catch (err) {
       next(err);

@@ -1,5 +1,6 @@
 const { BaseModel } = require('./base.model');
 const { mysqlClient } = require('../db');
+const { mysqlTables } = require('../constants');
 
 // TODO DAL
 
@@ -17,7 +18,7 @@ class RestaurantModel extends BaseModel {
     /**
      * @type {string}
      */
-    this.table = 'restaurant';
+    this.table = mysqlTables.restaurant;
   }
 }
 

@@ -7,7 +7,7 @@
 - [x] Migrate & Fixtures
 - [x] Mysql connect
 - [x] Mysql Connection Pooling
-- [ ] CRUD & Swagger & Tests
+- [x] CRUD & Swagger & Tests
     - [x] Restaurant
     - [x] Courier
     - [x] Product
@@ -15,6 +15,8 @@
     - [x] Order
     - [x] OrderItem
     - [x] CourierOrder
+- [ ] Business-logic
+    - [x] Create order
 
 ## Install and Use
 

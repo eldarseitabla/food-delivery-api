@@ -1,5 +1,6 @@
 const { BaseModel } = require('./base.model');
 const { mysqlClient } = require('../db');
+const { mysqlTables } = require('../constants');
 
 // TODO DAL
 
@@ -18,7 +19,7 @@ class CourierModel extends BaseModel {
     /**
      * @type {string}
      */
-    this.table = 'courier';
+    this.table = mysqlTables.courier;
   }
 }
 
