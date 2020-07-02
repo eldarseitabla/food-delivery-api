@@ -30,9 +30,9 @@ class CourierController {
    * @return {Promise<*>}
    */
   async create (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { name } = req.body;
     const result = await this._service.create({ name });
@@ -40,9 +40,9 @@ class CourierController {
   }
 
   async updateOne (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
 
     const { id } = req.params;
@@ -62,9 +62,9 @@ class CourierController {
 
   async findAll (req, res, next) {
     try {
-      const errorsFilter = await this._validator.checkFilter(req);
-      if (!errorsFilter.isEmpty()) {
-        return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsFilter.array())));
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { filter } = req.query;
       const result = await this._service.findAll(filter);

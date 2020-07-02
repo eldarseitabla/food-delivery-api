@@ -44,10 +44,13 @@ class BaseService {
   }
 
   /**
+   * @param {string} filter.where.field
+   * @param {string} filter.where.operator
+   * @param {number|string} filter.where.value
+   * @param {string} filter.order_by.sort_direction ASC | DESC
+   * @param {string} filter.order_by.field Column name
    * @param {number} filter.limit
    * @param {number} filter.offset
-   * @param {string} filter.where.field
-   * @param {number|string} filter.where.value
    * @return {Promise<Array>}
    */
   async findAll (filter) {

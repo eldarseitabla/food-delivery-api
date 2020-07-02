@@ -28,7 +28,7 @@ API Docs
 [http://127.0.0.1:5000/api-docs](http://127.0.0.1:5000/api-docs)
 
 OpenAPI spec
-[http://127.0.0.1:5000/openapi.yml](http://127.0.0.1:5000/openapi.yml)
+[http://127.0.0.1:5000/openapi.json](http://127.0.0.1:5000/openapi.json)
 
 
 ### Create DB via Docker

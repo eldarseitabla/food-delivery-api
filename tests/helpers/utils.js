@@ -1,10 +1,15 @@
 const filter = JSON.stringify({
-  offset: 0,
-  limit: 10,
-  order_by: {
-    sort_direction: 'ASC',
-    field: 'created_at',
+  where: {
+    field: 'id',
+    operator: '<>',
+    value: '0',
   },
+  order_by: {
+    field: 'id',
+    sort_direction: 'ASC',
+  },
+  offset: 0,
+  limit: 100,
 });
 
 module.exports = { filter };

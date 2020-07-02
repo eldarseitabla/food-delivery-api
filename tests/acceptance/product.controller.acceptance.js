@@ -51,14 +51,15 @@ describe('product.controller (acceptance)', () => {
     const filterByRestaurantId = JSON.stringify({
       where: {
         field: 'restaurant_id',
-        value: restaurant.id,
+        operator: '=',
+        value: `${restaurant.id}`,
       },
       order_by: {
         sort_direction: 'ASC',
-        field: 'created_at',
+        field: 'id',
       },
       offset: 0,
-      limit: 10,
+      limit: 100,
     });
 
     const { body: result } = await request(app)

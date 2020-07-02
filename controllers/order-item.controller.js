@@ -31,9 +31,9 @@ class OrderItemController {
    */
   async create (req, res, next) {
     try {
-      const errors = await this._validator.check(req);
-      if (!errors.isEmpty()) {
-        return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+      const resultCheck = await this._validator.check(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
 
       const { order_id, product_id, price } = req.body;
@@ -46,9 +46,9 @@ class OrderItemController {
 
   async updateOne (req, res, next) {
     try {
-      const errors = await this._validator.check(req);
-      if (!errors.isEmpty()) {
-        return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+      const resultCheck = await this._validator.check(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { id } = req.params;
       const { order_id, product_id, price } = req.body;
@@ -69,9 +69,9 @@ class OrderItemController {
   }
 
   async findAll (req, res, next) {
-    const errorsFilter = await this._validator.checkFilter(req);
-    if (!errorsFilter.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsFilter.array())));
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { filter } = req.query;
     const result = await this._service.findAll(filter);

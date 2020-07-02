@@ -65,28 +65,21 @@ class BaseModel {
   }
 
   /**
+   * @param {string} filter.where.field
+   * @param {string} filter.where.operator
+   * @param {number|string} filter.where.value
+   * @param {string} filter.order_by.sort_direction ASC | DESC
+   * @param {string} filter.order_by.field Column name
    * @param {number} filter.limit
    * @param {number} filter.offset
-   * @param {string} filter.where.field
-   * @param {number|string} filter.where.value
    * @return {Promise<Array>}
    */
   async findAll (filter) {
-    // TODO move it from here
-    let { field, value, operator } = { field: 'id', value: 0, operator: '>' };
-    const { offset, limit } = filter;
-    if (filter.where !== undefined) {
-      field = filter.where.field;
-      value = filter.where.value;
-      operator = '=';
-    }
-    let sortOrder = 'ASC'; // TODO hardcode
-    let sortColumnName = 'created_at'; // TODO hardcode
-    if (filter.order_by !== undefined) {
-      sortOrder = filter.order_by.sort_direction;
-      sortColumnName = filter.order_by.field;
-    }
-    return this._db(this.table).where(field, operator, value).orderBy(sortColumnName, sortOrder).limit(limit).offset(offset)
+    const where = filter.where;
+    const orderBy = filter.order_by;
+    const offset = filter.offset;
+    const limit = filter.limit;
+    return this._db(this.table).where(where.field, where.operator, where.value).orderBy(orderBy.field, orderBy.sort_direction).limit(limit).offset(offset);
   }
 
   /**

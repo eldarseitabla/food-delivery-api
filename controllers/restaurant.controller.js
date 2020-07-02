@@ -29,9 +29,9 @@ class RestaurantController {
    * @return {Promise<*>}
    */
   async create (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     try {
       const { name, picture } = req.body;
@@ -43,9 +43,9 @@ class RestaurantController {
   }
 
   async updateOne (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
 
     try {
@@ -68,9 +68,9 @@ class RestaurantController {
   }
 
   async findAll (req, res, next) {
-    const errorsFilter = await this._validator.checkFilter(req);
-    if (!errorsFilter.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsFilter.array())));
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { filter } = req.query;
     const result = await this._service.findAll(filter);

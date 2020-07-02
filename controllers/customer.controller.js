@@ -30,9 +30,9 @@ class CustomerController {
    * @return {Promise<*>}
    */
   async create (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { name, address } = req.body;
     const result = await this._service.create({ name, address });
@@ -40,9 +40,9 @@ class CustomerController {
   }
 
   async updateOne (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
 
     const { id } = req.params;
@@ -61,9 +61,9 @@ class CustomerController {
   }
 
   async findAll (req, res, next) {
-    const errorsFilter = await this._validator.checkFilter(req);
-    if (!errorsFilter.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsFilter.array())));
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { filter } = req.query;
     const result = await this._service.findAll(filter);
