@@ -420,6 +420,40 @@
         }
       }
     },
+    "/courier/how-much-did-complete-orders": {
+      "get": {
+        "summary": "How much did complete orders",
+        "operationId": "/courier/how-much-did-complete-orders",
+        "tags": [
+          "Courier"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonFilter"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Couriers Response How much did complete orders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CouriersResponseHowMuchDidCompleteOrders"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/product": {
       "post": {
         "summary": "Create",
@@ -1434,7 +1468,7 @@
         }
       },
       "CouriersResponseHowManyOrdersCompleted": {
-        "description": "Courier schema",
+        "description": "HowManyOrdersCompleted schema",
         "type": "object",
         "required": [
           "count"
@@ -1446,6 +1480,21 @@
         },
         "example": {
           "count": 3
+        }
+      },
+      "CouriersResponseHowMuchDidCompleteOrders": {
+        "description": "How much did complete orders schema",
+        "type": "object",
+        "required": [
+          "amount"
+        ],
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "amount": 100.44
         }
       },
       "ProductSchema": {

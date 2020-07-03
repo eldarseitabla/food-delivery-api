@@ -20,6 +20,7 @@
     - [x] Courier order
     - [x] Where did the courier most often was
     - [x] How many orders courier completed
+    - [x] How much did the courier take orders
 
 ## Install and Use
 

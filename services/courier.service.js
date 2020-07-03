@@ -14,6 +14,10 @@ class CourierService extends BaseService {
   async findHowManyOrdersCompleted (filter) {
     return this._model.findHowManyOrdersCompleted(filter);
   }
+
+  async findHowMuchDidCompleteOrders (filter) {
+    return this._model.findHowMuchDidCompleteOrders(filter);
+  }
 }
 
 /**

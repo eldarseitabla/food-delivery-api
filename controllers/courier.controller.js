@@ -102,6 +102,20 @@ class CourierController {
     }
   }
 
+  async findHowMuchDidCompleteOrders (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.findHowMuchDidCompleteOrders(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async deleteOne (req, res) {
     const { id } = req.params;
     await this._service.deleteOne(id);
@@ -143,6 +157,10 @@ courier.get('/where-did-he-go', async (req, res, next) => {
 
 courier.get('/how-many-orders-completed', async (req, res, next) => {
   await courierController.findHowManyOrdersCompleted(req, res, next);
+});
+
+courier.get('/how-much-did-complete-orders', async (req, res, next) => {
+  await courierController.findHowMuchDidCompleteOrders(req, res, next);
 });
 
 courier.delete('/:id', async (req, res) => {
