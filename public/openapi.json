@@ -352,6 +352,40 @@
         }
       }
     },
+    "/courier/where-did-he-go": {
+      "get": {
+        "summary": "Where did he go",
+        "operationId": "/courier/where-did-he-go",
+        "tags": [
+          "Courier"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonFilter"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Couriers Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CouriersResponseWhereDidHeGo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/product": {
       "post": {
         "summary": "Create",
@@ -1316,6 +1350,26 @@
           "updated_at": "2020-02-10 17:32:28"
         }
       },
+      "CourierWhereDidHeGoSchema": {
+        "description": "Courier schema",
+        "type": "object",
+        "required": [
+          "address",
+          "count"
+        ],
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "count": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "address": "some address",
+          "count": 3
+        }
+      },
       "CourierRequestBody": {
         "description": "Create Courier",
         "type": "object",
@@ -1336,6 +1390,13 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/CourierSchema"
+        }
+      },
+      "CouriersResponseWhereDidHeGo": {
+        "description": "List of Couriers where did he go",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CourierWhereDidHeGoSchema"
         }
       },
       "ProductSchema": {

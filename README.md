@@ -18,7 +18,7 @@
 - [ ] Business-logic
     - [x] Create order
     - [x] Courier order
-    - [x] Where did the courier most often take
+    - [x] Where did the courier most often was
 
 ## Install and Use
 
