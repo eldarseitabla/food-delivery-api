@@ -88,6 +88,20 @@ class CourierController {
     }
   }
 
+  async findHowManyOrdersCompleted (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.findHowManyOrdersCompleted(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async deleteOne (req, res) {
     const { id } = req.params;
     await this._service.deleteOne(id);
@@ -123,9 +137,12 @@ courier.get('', async (req, res, next) => {
   await courierController.find(req, res, next);
 });
 
-// Get many couriers
 courier.get('/where-did-he-go', async (req, res, next) => {
   await courierController.findWhereDidHeGo(req, res, next);
+});
+
+courier.get('/how-many-orders-completed', async (req, res, next) => {
+  await courierController.findHowManyOrdersCompleted(req, res, next);
 });
 
 courier.delete('/:id', async (req, res) => {

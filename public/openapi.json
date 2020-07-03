@@ -386,6 +386,40 @@
         }
       }
     },
+    "/courier/how-many-orders-completed": {
+      "get": {
+        "summary": "How many orders completed",
+        "operationId": "/courier/how-many-orders-completed",
+        "tags": [
+          "Courier"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonFilter"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Couriers Response HowManyOrdersCompleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CouriersResponseHowManyOrdersCompleted"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/product": {
       "post": {
         "summary": "Create",
@@ -1397,6 +1431,21 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/CourierWhereDidHeGoSchema"
+        }
+      },
+      "CouriersResponseHowManyOrdersCompleted": {
+        "description": "Courier schema",
+        "type": "object",
+        "required": [
+          "count"
+        ],
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "count": 3
         }
       },
       "ProductSchema": {

@@ -75,18 +75,18 @@ CREATE TABLE IF NOT EXISTS `order` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `order` (customer_id, payment_status, status, address)
     VALUES (1, 'notPaid', 'created', 'C address'),
-        (5, 'paid', 'active', 'P address'),
+        (5, 'paid', 'done', 'P address'),
         (4, 'paid', 'active', 'K address'),
         (2, 'paid', 'active', 'H address'),
         (3, 'paid', 'active', 'U address'),
         (4, 'paid', 'active', 'K address'),
         (6, 'paid', 'active', 'A address'),
-        (5, 'paid', 'active', 'P address'),
+        (5, 'paid', 'done', 'P address'),
         (4, 'paid', 'active', 'K address'),
         (3, 'paid', 'active', 'U address'),
         (2, 'paid', 'active', 'H address'),
         (4, 'paid', 'active', 'K address'),
-        (3, 'paid', 'active', 'U address');
+        (3, 'paid', 'done', 'U address');
 
 CREATE TABLE IF NOT EXISTS order_item (
   id                BIGINT(20) PRIMARY KEY AUTO_INCREMENT,

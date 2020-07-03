@@ -1,6 +1,7 @@
 const { BaseModel } = require('./base.model');
 const { mysqlClient } = require('../db');
 const { mysqlTables } = require('../constants');
+const { config } = require('../config');
 
 // TODO DAL
 
@@ -43,6 +44,27 @@ class CourierModel extends BaseModel {
       .orderBy(2, orderBy.sort_direction)
       .limit(limit)
       .offset(offset);
+  }
+
+  async findHowManyOrdersCompleted (filter) {
+    // SELECT COUNT(*) as count FROM courier c
+    // JOIN courier_order co ON c.id = co.courier_id
+    // JOIN `order` o ON o.id = co.order_id
+    // WHERE o.status = 'done'
+    const where = filter.where;
+    const orderBy = filter.order_by;
+    const offset = filter.offset;
+    const limit = filter.limit;
+    const result = await this._db(this.table)
+      .count('*', { as: 'count' })
+      .join(mysqlTables.courier_order,`${this.table}.id`,`${mysqlTables.courier_order}.courier_id`)
+      .join(mysqlTables.order, `${mysqlTables.order}.id`, `${mysqlTables.courier_order}.order_id`)
+      .where(`${mysqlTables.order}.status`, config.order.status.done)
+      .where(`${this.table}.${where.field}`, where.operator, where.value)
+      .orderBy(`${this.table}.${orderBy.field}`, orderBy.sort_direction)
+      .limit(limit)
+      .offset(offset);
+    return result[0];
   }
 }
 

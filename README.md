@@ -19,6 +19,7 @@
     - [x] Create order
     - [x] Courier order
     - [x] Where did the courier most often was
+    - [x] How many orders courier completed
 
 ## Install and Use
 

@@ -79,7 +79,11 @@ class BaseModel {
     const orderBy = filter.order_by;
     const offset = filter.offset;
     const limit = filter.limit;
-    return this._db(this.table).where(where.field, where.operator, where.value).orderBy(orderBy.field, orderBy.sort_direction).limit(limit).offset(offset);
+    return this._db(this.table)
+      .where(`${this.table}.${where.field}`, where.operator, where.value)
+      .orderBy(`${this.table}.${orderBy.field}`, orderBy.sort_direction)
+      .limit(limit)
+      .offset(offset);
   }
 
   /**
