@@ -15,12 +15,13 @@
     - [x] Order
     - [x] OrderItem
     - [x] CourierOrder
-- [ ] Business-logic
+- [x] Business-logic
     - [x] Create order
     - [x] Courier order
     - [x] Where did the courier most often was
     - [x] How many orders courier completed
     - [x] How much did the courier take orders
+    - [x] Average delivery time by courier
 
 ## Install and Use
 
@@ -66,3 +67,6 @@ Down
 ```bash
 npm run migrate:down
 ```
+
+Database diagram
+![DB diagram](./food_delivery_db_diagram.png)

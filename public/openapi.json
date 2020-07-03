@@ -454,6 +454,40 @@
         }
       }
     },
+    "/courier/average-delivery-time": {
+      "get": {
+        "summary": "Average Delivery time",
+        "operationId": "/courier/average-delivery-time",
+        "tags": [
+          "Courier"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonFilter"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response Average Delivery time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CouriersResponseAverageDeliveryTime"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/product": {
       "post": {
         "summary": "Create",
@@ -1495,6 +1529,21 @@
         },
         "example": {
           "amount": 100.44
+        }
+      },
+      "CouriersResponseAverageDeliveryTime": {
+        "description": "Average Delivery time schema",
+        "type": "object",
+        "required": [
+          "time_average_sec"
+        ],
+        "properties": {
+          "time_average_sec": {
+            "type": "number"
+          }
+        },
+        "example": {
+          "time_average_sec": 177796.0000
         }
       },
       "ProductSchema": {

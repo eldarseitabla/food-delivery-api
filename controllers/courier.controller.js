@@ -88,28 +88,42 @@ class CourierController {
     }
   }
 
-  async findHowManyOrdersCompleted (req, res, next) {
+  async howManyOrdersCompleted (req, res, next) {
     try {
       const resultCheck = await this._validator.checkFilter(req);
       if (!resultCheck.isValid) {
         return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { filter } = req.query;
-      const result = await this._service.findHowManyOrdersCompleted(filter);
+      const result = await this._service.howManyOrdersCompleted(filter);
       res.json(result);
     } catch (err) {
       next(err);
     }
   }
 
-  async findHowMuchDidCompleteOrders (req, res, next) {
+  async howMuchDidCompleteOrders (req, res, next) {
     try {
       const resultCheck = await this._validator.checkFilter(req);
       if (!resultCheck.isValid) {
         return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { filter } = req.query;
-      const result = await this._service.findHowMuchDidCompleteOrders(filter);
+      const result = await this._service.howMuchDidCompleteOrders(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async averageDeliveryTime (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.averageDeliveryTime(filter);
       res.json(result);
     } catch (err) {
       next(err);
@@ -156,11 +170,15 @@ courier.get('/where-did-he-go', async (req, res, next) => {
 });
 
 courier.get('/how-many-orders-completed', async (req, res, next) => {
-  await courierController.findHowManyOrdersCompleted(req, res, next);
+  await courierController.howManyOrdersCompleted(req, res, next);
 });
 
 courier.get('/how-much-did-complete-orders', async (req, res, next) => {
-  await courierController.findHowMuchDidCompleteOrders(req, res, next);
+  await courierController.howMuchDidCompleteOrders(req, res, next);
+});
+
+courier.get('/average-delivery-time', async (req, res, next) => {
+  await courierController.averageDeliveryTime(req, res, next);
 });
 
 courier.delete('/:id', async (req, res) => {
