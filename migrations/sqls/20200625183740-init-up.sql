@@ -54,9 +54,12 @@ CREATE TABLE IF NOT EXISTS customer (
   updated_at    TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE now()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO customer (name, address)
-    VALUES ('David', 'some address 1'),
-    ('Ryan', 'some address 2'),
-    ('Nathan', 'some address 3');
+    VALUES ('David', 'C address'),
+        ('Ryan', 'H address'),
+        ('Nathan', 'U address'),
+        ('Sophia', 'K address'),
+        ('William', 'P address'),
+        ('Olivia', 'A address');
 
 CREATE TABLE IF NOT EXISTS `order` (
   id                BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
@@ -71,7 +74,19 @@ CREATE TABLE IF NOT EXISTS `order` (
     REFERENCES customer(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `order` (customer_id, payment_status, status, address)
-    VALUES (1, 'notPaid', 'created', 'some address');
+    VALUES (1, 'notPaid', 'created', 'C address'),
+        (5, 'paid', 'done', 'P address'),
+        (4, 'paid', 'active', 'K address'),
+        (2, 'paid', 'active', 'H address'),
+        (3, 'paid', 'active', 'U address'),
+        (4, 'paid', 'active', 'K address'),
+        (6, 'paid', 'active', 'A address'),
+        (5, 'paid', 'done', 'P address'),
+        (4, 'paid', 'active', 'K address'),
+        (3, 'paid', 'active', 'U address'),
+        (2, 'paid', 'active', 'H address'),
+        (4, 'paid', 'active', 'K address'),
+        (3, 'paid', 'done', 'U address');
 
 CREATE TABLE IF NOT EXISTS order_item (
   id                BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
@@ -88,7 +103,32 @@ CREATE TABLE IF NOT EXISTS order_item (
     REFERENCES product(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO order_item (order_id, product_id, price)
-    VALUES (1, 1, 110.50);
+    VALUES (1, 1, 110.50),
+        (1, 2, 189.30),
+        (2, 3, 60.01),
+        (2, 4, 145),
+        (3, 5, 80.40),
+        (3, 6, 380.99),
+        (4, 7, 500.96),
+        (4, 8, 250.54),
+        (5, 9, 220),
+        (5, 3, 60.01),
+        (6, 5, 80.40),
+        (6, 7, 500.96),
+        (7, 2, 189.30),
+        (7, 3, 60.01),
+        (8, 4, 145),
+        (8, 6, 380.99),
+        (9, 8, 250.54),
+        (9, 9, 220),
+        (10, 6, 380.99),
+        (10, 7, 500.96),
+        (11, 3, 60.01),
+        (11, 5, 80.40),
+        (12, 7, 500.96),
+        (12, 2, 189.30),
+        (13, 6, 380.99),
+        (13, 8, 250.54);
 
 CREATE TABLE IF NOT EXISTS courier_order (
   id            BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
@@ -103,4 +143,16 @@ CREATE TABLE IF NOT EXISTS courier_order (
   FOREIGN KEY (order_id)
     REFERENCES `order`(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO courier_order (courier_id, order_id) VALUES (1, 1);
+INSERT INTO courier_order (courier_id, order_id)
+    VALUES (2, 3),
+        (2, 6),
+        (2, 9),
+        (2, 12),
+        (1, 5),
+        (1, 10),
+        (1, 13),
+        (3, 4),
+        (3, 11),
+        (1, 2),
+        (1, 8),
+        (3, 7);

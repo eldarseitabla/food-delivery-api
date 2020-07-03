@@ -66,7 +66,7 @@ const config = {
   swaggerUi: {
     options: {
       swaggerOptions: {
-        url: `http://${process.env.HOST}:${process.env.PORT}/openapi.yml`,
+        url: `http://${process.env.HOST}:${process.env.PORT}/openapi.json`,
       },
     },
   },

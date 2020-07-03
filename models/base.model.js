@@ -65,12 +65,25 @@ class BaseModel {
   }
 
   /**
-   * @param {number} limit
-   * @param {number} offset
+   * @param {string} filter.where.field
+   * @param {string} filter.where.operator
+   * @param {number|string} filter.where.value
+   * @param {string} filter.order_by.sort_direction ASC | DESC
+   * @param {string} filter.order_by.field Column name
+   * @param {number} filter.limit
+   * @param {number} filter.offset
    * @return {Promise<Array>}
    */
-  async findAll (limit, offset) {
-    return this._db(this.table).limit(limit).offset(offset);
+  async find (filter) {
+    const where = filter.where;
+    const orderBy = filter.order_by;
+    const offset = filter.offset;
+    const limit = filter.limit;
+    return this._db(this.table)
+      .where(`${this.table}.${where.field}`, where.operator, where.value)
+      .orderBy(`${this.table}.${orderBy.field}`, orderBy.sort_direction)
+      .limit(limit)
+      .offset(offset);
   }
 
   /**

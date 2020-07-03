@@ -7,7 +7,7 @@
 - [x] Migrate & Fixtures
 - [x] Mysql connect
 - [x] Mysql Connection Pooling
-- [ ] CRUD & Swagger & Tests
+- [x] CRUD & Swagger & Tests
     - [x] Restaurant
     - [x] Courier
     - [x] Product
@@ -15,6 +15,13 @@
     - [x] Order
     - [x] OrderItem
     - [x] CourierOrder
+- [x] Business-logic
+    - [x] Create order
+    - [x] Courier order
+    - [x] Where did the courier most often was
+    - [x] How many orders courier completed
+    - [x] How much did the courier take orders
+    - [x] Average delivery time by courier
 
 ## Install and Use
 
@@ -28,7 +35,7 @@ API Docs
 [http://127.0.0.1:5000/api-docs](http://127.0.0.1:5000/api-docs)
 
 OpenAPI spec
-[http://127.0.0.1:5000/openapi.yml](http://127.0.0.1:5000/openapi.yml)
+[http://127.0.0.1:5000/openapi.json](http://127.0.0.1:5000/openapi.json)
 
 
 ### Create DB via Docker
@@ -60,3 +67,6 @@ Down
 ```bash
 npm run migrate:down
 ```
+
+Database diagram
+![DB diagram](./food_delivery_db_diagram.png)

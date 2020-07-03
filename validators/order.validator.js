@@ -1,7 +1,5 @@
 const httpErrors = require('http-errors');
-const { check, validationResult } = require('express-validator');
 const { CommonValidator } = require('./common.validator');
-const { config } = require('../config');
 
 /**
  * @memberOf module:validator
@@ -11,29 +9,20 @@ const { config } = require('../config');
 class OrderValidator extends CommonValidator {
   /**
    * @param {Request} req
-   * @return {Promise<Result<ValidationError>>}
+   * @return {Promise<{ errors: [], isValid: boolean }>}
    */
   async check (req) {
-    const { payment_status, status } = req.body;
-    if (!config.order.paymentStatus[payment_status]) {
-      throw new httpErrors.UnprocessableEntity(`payment_status not as expected: ${payment_status}`);
+    try {
+      const resultCheck = {
+        errors: [],
+        isValid: true,
+      };
+      resultCheck.isValid = this.ajv.validate({ $ref: `${this.apiKey}#/components/schemas/OrderRequestBody` }, req.body);
+      resultCheck.errors.push('request body does not match the schema');
+      return resultCheck;
+    } catch (err) {
+      throw new httpErrors.UnsupportedMediaType(err.message);
     }
-
-    if (!config.order.status[status]) {
-      throw new httpErrors.UnprocessableEntity(`status not as expected: ${status}`);
-    }
-
-    const minChars = 6;
-    const min = 1;
-    await check('customer_id', 'customer_id is empty').not().isEmpty().run(req);
-    await check('customer_id', `customer_id must be number min ${min}`).isInt({ min }).run(req);
-
-    await check('payment_status', 'payment_status is empty').not().isEmpty().run(req);
-    await check('status', 'status is empty').not().isEmpty().run(req);
-
-    await check('address', 'Address is empty').not().isEmpty().run(req);
-    await check('address', `Address must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
-    return validationResult(req);
   }
 }
 

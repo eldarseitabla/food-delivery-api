@@ -7,6 +7,13 @@ const { productModel } = require('../models');
  * @instance
  */
 class ProductService extends BaseService {
+  /**
+   * @param {Object} filter
+   * @return {Promise<Array>}
+   */
+  async find (filter) {
+    return this._model.find(filter);
+  }
 }
 
 /**

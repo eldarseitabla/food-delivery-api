@@ -44,12 +44,17 @@ class BaseService {
   }
 
   /**
-   * @param {number} limit
-   * @param {number} offset
+   * @param {string} filter.where.field
+   * @param {string} filter.where.operator
+   * @param {number|string} filter.where.value
+   * @param {string} filter.order_by.sort_direction ASC | DESC
+   * @param {string} filter.order_by.field Column name
+   * @param {number} filter.limit
+   * @param {number} filter.offset
    * @return {Promise<Array>}
    */
-  async findAll (limit, offset) {
-    return this._model.findAll(limit, offset);
+  async find (filter) {
+    return this._model.find(filter);
   }
 
   /**

@@ -31,13 +31,13 @@ class OrderController {
    */
   async create (req, res, next) {
     try {
-      const errors = await this._validator.check(req);
-      if (!errors.isEmpty()) {
-        return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+      const resultCheck = await this._validator.check(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
 
-      const { customer_id, payment_status, status, address } = req.body;
-      const result = await this._service.create({ customer_id, payment_status, status, address });
+      const { customer_id, payment_status, status, address, orderItems } = req.body;
+      const result = await this._service.create({ customer_id, payment_status, status, address, orderItems });
       res.json(result);
     } catch (err) {
       next(err);
@@ -46,13 +46,13 @@ class OrderController {
 
   async updateOne (req, res, next) {
     try {
-      const errors = await this._validator.check(req);
-      if (!errors.isEmpty()) {
-        return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+      const resultCheck = await this._validator.check(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { id } = req.params;
-      const { customer_id, payment_status, status, address } = req.body;
-      const result = await this._service.updateOne(id, { customer_id, payment_status, status, address });
+      const { customer_id, payment_status, status, address, orderItems } = req.body;
+      const result = await this._service.updateOne(id, { customer_id, payment_status, status, address, orderItems });
       res.json(result);
     } catch (err) {
       next(err);
@@ -68,13 +68,13 @@ class OrderController {
     res.json(result);
   }
 
-  async findAll (req, res, next) {
-    const errorsPagination = await this._validator.checkPagination(req);
-    if (!errorsPagination.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsPagination.array())));
+  async find (req, res, next) {
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
-    const { limit, offset } = req.query;
-    const result = await this._service.findAll(limit, offset);
+    const { filter } = req.query;
+    const result = await this._service.find(filter);
     res.json(result);
   }
 
@@ -110,7 +110,7 @@ order.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many orders
 order.get('', async (req, res, next) => {
-  await orderController.findAll(req, res, next);
+  await orderController.find(req, res, next);
 });
 
 order.delete('/:id', async (req, res) => {

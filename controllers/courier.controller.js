@@ -30,9 +30,9 @@ class CourierController {
    * @return {Promise<*>}
    */
   async create (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { name } = req.body;
     const result = await this._service.create({ name });
@@ -40,9 +40,9 @@ class CourierController {
   }
 
   async updateOne (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
 
     const { id } = req.params;
@@ -60,14 +60,74 @@ class CourierController {
     res.json(result);
   }
 
-  async findAll (req, res, next) {
-    const errorsPagination = await this._validator.checkPagination(req);
-    if (!errorsPagination.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsPagination.array())));
+  async find (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.find(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
     }
-    const { limit, offset } = req.query;
-    const result = await this._service.findAll(limit, offset);
-    res.json(result);
+  }
+
+  async findWhereDidHeGo (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.findWhereDidHeGo(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async howManyOrdersCompleted (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.howManyOrdersCompleted(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async howMuchDidCompleteOrders (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.howMuchDidCompleteOrders(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async averageDeliveryTime (req, res, next) {
+    try {
+      const resultCheck = await this._validator.checkFilter(req);
+      if (!resultCheck.isValid) {
+        return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
+      }
+      const { filter } = req.query;
+      const result = await this._service.averageDeliveryTime(filter);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
   }
 
   async deleteOne (req, res) {
@@ -102,7 +162,23 @@ courier.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many couriers
 courier.get('', async (req, res, next) => {
-  await courierController.findAll(req, res, next);
+  await courierController.find(req, res, next);
+});
+
+courier.get('/where-did-he-go', async (req, res, next) => {
+  await courierController.findWhereDidHeGo(req, res, next);
+});
+
+courier.get('/how-many-orders-completed', async (req, res, next) => {
+  await courierController.howManyOrdersCompleted(req, res, next);
+});
+
+courier.get('/how-much-did-complete-orders', async (req, res, next) => {
+  await courierController.howMuchDidCompleteOrders(req, res, next);
+});
+
+courier.get('/average-delivery-time', async (req, res, next) => {
+  await courierController.averageDeliveryTime(req, res, next);
 });
 
 courier.delete('/:id', async (req, res) => {

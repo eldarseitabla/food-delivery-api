@@ -30,9 +30,9 @@ class CustomerController {
    * @return {Promise<*>}
    */
   async create (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { name, address } = req.body;
     const result = await this._service.create({ name, address });
@@ -40,9 +40,9 @@ class CustomerController {
   }
 
   async updateOne (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
 
     const { id } = req.params;
@@ -60,13 +60,13 @@ class CustomerController {
     res.json(result);
   }
 
-  async findAll (req, res, next) {
-    const errorsPagination = await this._validator.checkPagination(req);
-    if (!errorsPagination.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsPagination.array())));
+  async find (req, res, next) {
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
-    const { limit, offset } = req.query;
-    const result = await this._service.findAll(limit, offset);
+    const { filter } = req.query;
+    const result = await this._service.find(filter);
     res.json(result);
   }
 
@@ -102,7 +102,7 @@ customer.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many customers
 customer.get('', async (req, res, next) => {
-  await customerController.findAll(req, res, next);
+  await customerController.find(req, res, next);
 });
 
 customer.delete('/:id', async (req, res) => {

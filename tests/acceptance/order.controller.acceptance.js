@@ -2,9 +2,10 @@ const request = require('supertest');
 const assert = require('assert');
 const { app } = require('../../app');
 const { orderService, customerService } = require('../../services');
+const { filter } = require('../helpers/utils');
 
 describe('order.controller (acceptance)', () => {
-  const data = { payment_status: 'notPaid', status: 'created', address: 'some address' };
+  const data = { payment_status: 'notPaid', status: 'created', address: 'some address', orderItems: [] };
   const testCustomer = { name: 'Test customer', address: 'test address' };
 
   beforeEach('before each', async () => {
@@ -42,7 +43,7 @@ describe('order.controller (acceptance)', () => {
     });
 
     const { body: result } = await request(app)
-      .get('/order?limit=10')
+      .get(`/order?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -51,7 +52,9 @@ describe('order.controller (acceptance)', () => {
       created_at: result[0].created_at,
       updated_at: result[0].updated_at,
       customer_id: customer.id,
-      ...data,
+      payment_status: data.payment_status,
+      status: data.status,
+      address: data.address,
     };
 
     assert.strictEqual(Array.isArray(result), true);
@@ -117,7 +120,7 @@ describe('order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/order?limit=10')
+      .get('/order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -130,7 +133,7 @@ describe('order.controller (acceptance)', () => {
     await orderService.create({ ...data, customer_id: customer.id });
     await orderService.create({ ...data, name: 'Second order', customer_id: customer.id });
     const { body: resultAfterCreated } = await request(app)
-      .get('/order?limit=10')
+      .get('/order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -139,7 +142,7 @@ describe('order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/order?limit=10')
+      .get('/order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 

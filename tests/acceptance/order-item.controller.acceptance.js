@@ -3,6 +3,7 @@ const assert = require('assert');
 const { app } = require('../../app');
 const { orderItemService, customerService, orderService, restaurantService, productService } = require('../../services');
 const { config } = require('../../config');
+const { filter } = require('../helpers/utils');
 
 describe('order-item.controller (acceptance)', () => {
   const data = { order_id: 1, product_id: 1, price: 220.74 };
@@ -79,7 +80,7 @@ describe('order-item.controller (acceptance)', () => {
     });
 
     const { body: result } = await request(app)
-      .get('/order-item?limit=10')
+      .get(`/order-item?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -161,7 +162,7 @@ describe('order-item.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/order-item?limit=10')
+      .get('/order-item')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -174,7 +175,7 @@ describe('order-item.controller (acceptance)', () => {
     await orderItemService.create({ ...data, product_id, order_id });
     await orderItemService.create({ ...data, name: 'Second orderItem', product_id, order_id });
     const { body: resultAfterCreated } = await request(app)
-      .get('/order-item?limit=10')
+      .get('/order-item')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -183,7 +184,7 @@ describe('order-item.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/order-item?limit=10')
+      .get('/order-item')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 

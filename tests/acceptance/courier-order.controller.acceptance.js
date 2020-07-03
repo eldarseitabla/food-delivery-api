@@ -8,13 +8,14 @@ const {
   orderService,
 } = require('../../services');
 const { config } = require('../../config');
+const { filter } = require('../helpers/utils');
 
 describe('courier-order.controller (acceptance)', () => {
   const testCourier = { name: 'Rock' };
   const testCustomer = { name: 'Some customer', address: 'Some address' };
   const testOrder = {
-    payment_status: config.order.paymentStatus.notPaid,
-    status: config.order.status.created,
+    payment_status: config.order.paymentStatus.paid,
+    status: config.order.status.active,
     address: 'some address',
   };
 
@@ -61,7 +62,7 @@ describe('courier-order.controller (acceptance)', () => {
     await courierOrderService.create({ courier_id, order_id });
 
     const { body: result } = await request(app)
-      .get('/courier-order?limit=10')
+      .get(`/courier-order?filter=${encodeURIComponent(filter)}`)
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -132,7 +133,7 @@ describe('courier-order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: result } = await request(app)
-      .get('/courier-order?limit=10')
+      .get('/courier-order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -143,9 +144,8 @@ describe('courier-order.controller (acceptance)', () => {
   it('delete all', async () => {
     const { courier_id, order_id } = await createDependencies();
     await courierOrderService.create({ courier_id, order_id });
-    await courierOrderService.create({ courier_id, order_id });
     const { body: resultAfterCreated } = await request(app)
-      .get('/courier-order?limit=10')
+      .get('/courier-order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
@@ -154,13 +154,13 @@ describe('courier-order.controller (acceptance)', () => {
       .expect(204);
 
     const { body: resultAfterDeleteAll } = await request(app)
-      .get('/courier-order?limit=10')
+      .get('/courier-order')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(200);
 
     // Check after created
     assert.strictEqual(Array.isArray(resultAfterCreated), true);
-    assert.strictEqual(resultAfterCreated.length, 2);
+    assert.strictEqual(resultAfterCreated.length, 1);
 
     // Check after delete all
     assert.strictEqual(Array.isArray(resultAfterDeleteAll), true);

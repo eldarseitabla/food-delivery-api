@@ -7,6 +7,21 @@ const { courierModel } = require('../models');
  * @instance
  */
 class CourierService extends BaseService {
+  async findWhereDidHeGo (filter) {
+    return this._model.findWhereDidHeGo(filter);
+  }
+
+  async howManyOrdersCompleted (filter) {
+    return this._model.howManyOrdersCompleted(filter);
+  }
+
+  async howMuchDidCompleteOrders (filter) {
+    return this._model.howMuchDidCompleteOrders(filter);
+  }
+
+  async averageDeliveryTime (filter) {
+    return this._model.averageDeliveryTime(filter);
+  }
 }
 
 /**

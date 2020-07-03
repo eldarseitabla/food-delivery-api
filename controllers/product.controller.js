@@ -30,9 +30,9 @@ class ProductController {
    * @return {Promise<*>}
    */
   async create (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     try {
       const { name, price, description, picture, restaurant_id } = req.body;
@@ -43,10 +43,16 @@ class ProductController {
     }
   }
 
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {Promise<*>}
+   */
   async updateOne (req, res, next) {
-    const errors = await this._validator.check(req);
-    if (!errors.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errors.array())));
+    const resultCheck = await this._validator.check(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
 
     try {
@@ -59,6 +65,12 @@ class ProductController {
     }
   }
 
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {Promise<*>}
+   */
   async findOne (req, res, next) {
     const { id } = req.params;
     const result = await this._service.findOne(id);
@@ -68,22 +80,39 @@ class ProductController {
     res.json(result);
   }
 
-  async findAll (req, res, next) {
-    const errorsPagination = await this._validator.checkPagination(req);
-    if (!errorsPagination.isEmpty()) {
-      return next(new httpErrors.UnprocessableEntity(JSON.stringify(errorsPagination.array())));
+  /**
+   * TODO Rename to find()
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {Promise<*>}
+   */
+  async find (req, res, next) {
+    const resultCheck = await this._validator.checkFilter(req);
+    if (!resultCheck.isValid) {
+      return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
-    const { limit, offset } = req.query;
-    const result = await this._service.findAll(limit, offset);
+    const { filter } = req.query;
+    const result = await this._service.find(filter);
     res.json(result);
   }
 
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @return {Promise<*>}
+   */
   async deleteOne (req, res) {
     const { id } = req.params;
     await this._service.deleteOne(id);
     res.status(204).send();
   }
 
+  /**
+   * @param {Request} req
+   * @param {Response} res
+   * @return {Promise<*>}
+   */
   async deleteAll (req, res) {
     await this._service.deleteAll();
     res.status(204).send();
@@ -110,7 +139,7 @@ product.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many products
 product.get('', async (req, res, next) => {
-  await productController.findAll(req, res, next);
+  await productController.find(req, res, next);
 });
 
 product.delete('/:id', async (req, res) => {

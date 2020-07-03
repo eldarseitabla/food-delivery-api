@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const httpErrors = require('http-errors');
 const { CommonValidator } = require('./common.validator');
 
 /**
@@ -9,26 +9,20 @@ const { CommonValidator } = require('./common.validator');
 class ProductValidator extends CommonValidator {
   /**
    * @param {Request} req
-   * @return {Promise<Result<ValidationError>>}
+   * @return {Promise<{ errors: [], isValid: boolean }>}
    */
   async check (req) {
-    const minChars = 6;
-    const min = 1;
-    await check('name', 'Name is empty').not().isEmpty().run(req);
-    await check('name', `Name must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
-
-    await check('price', 'Price is empty').not().isEmpty().run(req);
-    await check('price', 'Price must be floating point').isDecimal().run(req);
-
-    await check('description', 'Description is empty').not().isEmpty().run(req);
-    await check('description', `Description must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
-
-    await check('picture', 'Picture is empty').not().isEmpty().run(req);
-    await check('picture', `Picture must be at least ${minChars} characters long`).isLength({ min: minChars }).run(req);
-
-    await check('restaurant_id', 'restaurant_id is empty').not().isEmpty().run(req);
-    await check('restaurant_id', `restaurant_id must be number min ${min}`).isInt({ min }).run(req);
-    return validationResult(req);
+    try {
+      const resultCheck = {
+        errors: [],
+        isValid: true,
+      };
+      resultCheck.isValid = this.ajv.validate({ $ref: `${this.apiKey}#/components/schemas/ProductRequestBody` }, req.body);
+      resultCheck.errors.push('request body does not match the schema');
+      return resultCheck;
+    } catch (err) {
+      throw new httpErrors.UnsupportedMediaType(err.message);
+    }
   }
 }
 
