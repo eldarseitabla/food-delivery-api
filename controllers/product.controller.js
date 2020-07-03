@@ -87,13 +87,13 @@ class ProductController {
    * @param {NextFunction} next
    * @return {Promise<*>}
    */
-  async findAll (req, res, next) {
+  async find (req, res, next) {
     const resultCheck = await this._validator.checkFilter(req);
     if (!resultCheck.isValid) {
       return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { filter } = req.query;
-    const result = await this._service.findAll(filter);
+    const result = await this._service.find(filter);
     res.json(result);
   }
 
@@ -139,7 +139,7 @@ product.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many products
 product.get('', async (req, res, next) => {
-  await productController.findAll(req, res, next);
+  await productController.find(req, res, next);
 });
 
 product.delete('/:id', async (req, res) => {

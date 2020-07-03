@@ -74,7 +74,7 @@ class BaseModel {
    * @param {number} filter.offset
    * @return {Promise<Array>}
    */
-  async findAll (filter) {
+  async find (filter) {
     const where = filter.where;
     const orderBy = filter.order_by;
     const offset = filter.offset;

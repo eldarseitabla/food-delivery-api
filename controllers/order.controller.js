@@ -68,13 +68,13 @@ class OrderController {
     res.json(result);
   }
 
-  async findAll (req, res, next) {
+  async find (req, res, next) {
     const resultCheck = await this._validator.checkFilter(req);
     if (!resultCheck.isValid) {
       return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
     }
     const { filter } = req.query;
-    const result = await this._service.findAll(filter);
+    const result = await this._service.find(filter);
     res.json(result);
   }
 
@@ -110,7 +110,7 @@ order.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many orders
 order.get('', async (req, res, next) => {
-  await orderController.findAll(req, res, next);
+  await orderController.find(req, res, next);
 });
 
 order.delete('/:id', async (req, res) => {

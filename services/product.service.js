@@ -11,8 +11,8 @@ class ProductService extends BaseService {
    * @param {Object} filter
    * @return {Promise<Array>}
    */
-  async findAll (filter) {
-    return this._model.findAll(filter);
+  async find (filter) {
+    return this._model.find(filter);
   }
 }
 

@@ -60,14 +60,14 @@ class CourierController {
     res.json(result);
   }
 
-  async findAll (req, res, next) {
+  async find (req, res, next) {
     try {
       const resultCheck = await this._validator.checkFilter(req);
       if (!resultCheck.isValid) {
         return next(new httpErrors.UnprocessableEntity(JSON.stringify(resultCheck.errors)));
       }
       const { filter } = req.query;
-      const result = await this._service.findAll(filter);
+      const result = await this._service.find(filter);
       res.json(result);
     } catch (err) {
       next(err);
@@ -106,7 +106,7 @@ courier.get('/:id(\\d+)', async (req, res, next) => {
 
 // Get many couriers
 courier.get('', async (req, res, next) => {
-  await courierController.findAll(req, res, next);
+  await courierController.find(req, res, next);
 });
 
 courier.delete('/:id', async (req, res) => {
