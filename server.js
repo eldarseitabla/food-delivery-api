@@ -18,27 +18,29 @@ let server;
 })();
 
 process.on('SIGINT', async () => {
-  await app.get('shutdown')();
-  server.close((error) => {
-    if (error) {
-      logger.error(`SIGINT ${error.message}`);
-      process.exit(1);
-    }
-    logger.debug('SIGINT');
+  try {
+    logger.info('Start SIGINT');
+    await app.get('shutdown')();
+    await server.close();
+    logger.info('SIGINT Successful');
     process.exit(0);
-  });
+  } catch (err) {
+    logger.error(err.message);
+    process.exit(1);
+  }
 });
 
 process.on('SIGTERM', async () => {
-  await app.get('shutdown')();
-  server.close((error) => {
-    if (error) {
-      logger.error(`SIGTERM ${error.message}`);
-      process.exit(1);
-    }
-    logger.debug('SIGTERM');
+  try {
+    logger.info('Start SIGTERM');
+    await app.get('shutdown')();
+    await server.close();
+    logger.info('SIGTERM Successful');
     process.exit(0);
-  });
+  } catch (err) {
+    logger.error(err.message);
+    process.exit(1);
+  }
 });
 
 process.on('unhandledRejection', (reason, p) => {

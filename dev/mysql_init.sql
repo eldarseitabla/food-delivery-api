@@ -1,1 +1,3 @@
-CREATE DATABASE IF NOT EXISTS food_delivery_db;
+CREATE DATABASE IF NOT EXISTS food_delivery_db
+    DEFAULT CHARACTER SET = utf8
+    DEFAULT COLLATE = utf8_unicode_ci;
